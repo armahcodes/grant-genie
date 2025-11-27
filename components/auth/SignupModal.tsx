@@ -138,7 +138,17 @@ export default function SignupModal({ isOpen, onClose, onSwitchToLogin }: Signup
                     value={formData.firstName}
                     onChange={handleInputChange}
                     color="purple.900"
-                    _placeholder={{ color: 'gray.500' }}
+                    _placeholder={{ color: 'purple.400' }}
+                    bg="neomorphic.background"
+                    border="none"
+                    borderRadius="2xl"
+                    boxShadow="neo.inset.sm"
+                    _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
+                    _focusVisible={{
+                      outline: '3px solid',
+                      outlineColor: 'purple.500',
+                      outlineOffset: '2px',
+                    }}
                   />
                 </Field.Root>
 
@@ -150,7 +160,17 @@ export default function SignupModal({ isOpen, onClose, onSwitchToLogin }: Signup
                     value={formData.lastName}
                     onChange={handleInputChange}
                     color="purple.900"
-                    _placeholder={{ color: 'gray.500' }}
+                    _placeholder={{ color: 'purple.400' }}
+                    bg="neomorphic.background"
+                    border="none"
+                    borderRadius="2xl"
+                    boxShadow="neo.inset.sm"
+                    _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
+                    _focusVisible={{
+                      outline: '3px solid',
+                      outlineColor: 'purple.500',
+                      outlineOffset: '2px',
+                    }}
                   />
                 </Field.Root>
               </SimpleGrid>
@@ -164,7 +184,17 @@ export default function SignupModal({ isOpen, onClose, onSwitchToLogin }: Signup
                   value={formData.email}
                   onChange={handleInputChange}
                   color="purple.900"
-                  _placeholder={{ color: 'gray.500' }}
+                  _placeholder={{ color: 'purple.400' }}
+                  bg="neomorphic.background"
+                  border="none"
+                  borderRadius="2xl"
+                  boxShadow="neo.inset.sm"
+                  _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
+                  _focusVisible={{
+                    outline: '3px solid',
+                    outlineColor: 'purple.500',
+                    outlineOffset: '2px',
+                  }}
                 />
               </Field.Root>
 
@@ -176,7 +206,17 @@ export default function SignupModal({ isOpen, onClose, onSwitchToLogin }: Signup
                   value={formData.organization}
                   onChange={handleInputChange}
                   color="purple.900"
-                  _placeholder={{ color: 'gray.500' }}
+                  _placeholder={{ color: 'purple.400' }}
+                  bg="neomorphic.background"
+                  border="none"
+                  borderRadius="2xl"
+                  boxShadow="neo.inset.sm"
+                  _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
+                  _focusVisible={{
+                    outline: '3px solid',
+                    outlineColor: 'purple.500',
+                    outlineOffset: '2px',
+                  }}
                 />
               </Field.Root>
 
@@ -189,7 +229,17 @@ export default function SignupModal({ isOpen, onClose, onSwitchToLogin }: Signup
                   value={formData.password}
                   onChange={handleInputChange}
                   color="purple.900"
-                  _placeholder={{ color: 'gray.500' }}
+                  _placeholder={{ color: 'purple.400' }}
+                  bg="neomorphic.background"
+                  border="none"
+                  borderRadius="2xl"
+                  boxShadow="neo.inset.sm"
+                  _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
+                  _focusVisible={{
+                    outline: '3px solid',
+                    outlineColor: 'purple.500',
+                    outlineOffset: '2px',
+                  }}
                 />
               </Field.Root>
 
@@ -203,7 +253,17 @@ export default function SignupModal({ isOpen, onClose, onSwitchToLogin }: Signup
                   onChange={handleInputChange}
                   onKeyPress={(e) => e.key === 'Enter' && handleSignup()}
                   color="purple.900"
-                  _placeholder={{ color: 'gray.500' }}
+                  _placeholder={{ color: 'purple.400' }}
+                  bg="neomorphic.background"
+                  border="none"
+                  borderRadius="2xl"
+                  boxShadow="neo.inset.sm"
+                  _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
+                  _focusVisible={{
+                    outline: '3px solid',
+                    outlineColor: 'purple.500',
+                    outlineOffset: '2px',
+                  }}
                 />
               </Field.Root>
 
@@ -233,6 +293,19 @@ export default function SignupModal({ isOpen, onClose, onSwitchToLogin }: Signup
                 w="full"
                 onClick={handleSignup}
                 loading={isLoading}
+                borderRadius="2xl"
+                boxShadow="neo.md"
+                py={6}
+                fontSize="md"
+                fontWeight="semibold"
+                color="white"
+                _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                _active={{ boxShadow: 'neo.sm', transform: 'translateY(0)' }}
+                _focusVisible={{
+                  outline: '3px solid',
+                  outlineColor: 'purple.500',
+                  outlineOffset: '2px',
+                }}
               >
                 Create Account
               </Button>
@@ -249,6 +322,21 @@ export default function SignupModal({ isOpen, onClose, onSwitchToLogin }: Signup
                 w="full"
                 variant="outline"
                 onClick={handleGoogleSignup}
+                color="purple.900"
+                bg="neomorphic.background"
+                border="none"
+                borderRadius="2xl"
+                boxShadow="neo.sm"
+                py={6}
+                fontSize="md"
+                fontWeight="semibold"
+                _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+                _focusVisible={{
+                  outline: '3px solid',
+                  outlineColor: 'purple.500',
+                  outlineOffset: '2px',
+                }}
               >
                 <svg width="18" height="18" viewBox="0 0 18 18">
                   <path

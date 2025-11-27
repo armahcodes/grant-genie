@@ -40,9 +40,9 @@ export function KeyboardShortcutsModal({ isOpen, onClose, shortcuts }: KeyboardS
   }, {} as Record<string, KeyboardShortcut[]>)
 
   return (
-    <DialogRoot open={isOpen} onOpenChange={(e) => !e.open && onClose()} size="lg">
+    <DialogRoot open={isOpen} onOpenChange={(details) => !details.open && onClose()}>
       <DialogBackdrop />
-      <DialogContent>
+      <DialogContent maxW="lg">
         <DialogHeader>
           <Text fontSize="2xl" fontWeight="bold">
             Keyboard Shortcuts

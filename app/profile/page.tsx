@@ -29,8 +29,7 @@ import { useState, useEffect } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { FiUser, FiBell, FiLock, FiShield, FiMail, FiSmartphone, FiGlobe } from 'react-icons/fi'
-import { MdBusiness } from 'react-icons/md'
+import { FiUser, FiBell, FiLock, FiShield, FiMail, FiSmartphone, FiGlobe, FiBriefcase } from 'react-icons/fi'
 import MainLayout from '@/components/layout/MainLayout'
 import { useAppToast } from '@/lib/utils/toast'
 import { getErrorMessage } from '@/lib/utils/formHelpers'
@@ -221,7 +220,7 @@ export default function ProfilePage() {
 
   const menuItems: Array<{ id: 'personal' | 'organization' | 'notifications' | 'security'; icon: any; label: string }> = [
     { id: 'personal', icon: FiUser, label: 'Personal Information' },
-    { id: 'organization', icon: MdBusiness, label: 'Organization Details' },
+    { id: 'organization', icon: FiBriefcase, label: 'Organization Details' },
     { id: 'notifications', icon: FiBell, label: 'Notification Preferences' },
     { id: 'security', icon: FiLock, label: 'Security Settings' },
   ]
@@ -240,12 +239,19 @@ export default function ProfilePage() {
           <GridItem>
             <VStack gap={6} align="stretch">
               {/* Profile Picture Section */}
-              <Box p={6} bg="white" borderRadius="lg" boxShadow="sm" border="1px" borderColor="gray.200">
+              <Box p={6} bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
                 <VStack gap={4}>
                   <Avatar.Root size="2xl" bg="purple.500">
                     <Avatar.Fallback>SJ</Avatar.Fallback>
                   </Avatar.Root>
-                  <Button size="sm">
+                  <Button
+                    size="sm"
+                    colorPalette="purple"
+                    borderRadius="2xl"
+                    boxShadow="neo.sm"
+                    _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
+                    _active={{ transform: 'scale(0.98)', boxShadow: 'neo.inset.sm' }}
+                  >
                     <Icon as={FiUser} />
                     Change Photo
                   </Button>
@@ -253,19 +259,21 @@ export default function ProfilePage() {
               </Box>
 
               {/* Navigation Menu */}
-              <Box p={4} bg="white" borderRadius="lg" boxShadow="sm" border="1px" borderColor="gray.200">
+              <Box p={4} bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
                 <List.Root gap={2}>
                   {menuItems.map((item) => (
                     <List.Item
                       key={item.id}
                       p={3}
-                      borderRadius="md"
+                      borderRadius="2xl"
                       cursor="pointer"
-                      bg={activeTab === item.id ? 'purple.50' : 'transparent'}
+                      bg={activeTab === item.id ? 'neomorphic.background' : 'transparent'}
                       color={activeTab === item.id ? 'purple.600' : 'purple.800'}
                       fontWeight={activeTab === item.id ? 'semibold' : 'normal'}
-                      _hover={{ bg: activeTab === item.id ? 'purple.50' : 'gray.50' }}
+                      boxShadow={activeTab === item.id ? 'neo.inset.sm' : 'none'}
+                      _hover={{ bg: 'neomorphic.background', boxShadow: activeTab === item.id ? 'neo.inset.sm' : 'neo.sm' }}
                       onClick={() => setActiveTab(item.id)}
+                      transition="all 0.3s"
                     >
                       <Flex align="center">
                         <Icon as={item.icon} boxSize={5} mr={2} />
@@ -280,7 +288,7 @@ export default function ProfilePage() {
 
           {/* Main Content Area */}
           <GridItem>
-            <Box p={8} bg="white" borderRadius="lg" boxShadow="sm" border="1px" borderColor="gray.200">
+            <Box p={8} bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
               {activeTab === 'personal' && (
                 <form onSubmit={personalForm.handleSubmit(onSavePersonal)}>
                   <VStack gap={6} align="stretch">
@@ -378,7 +386,7 @@ export default function ProfilePage() {
                             placeholder="Tell us about yourself and your role..."
                             rows={4}
                             color="purple.900"
-                            _placeholder={{ color: 'gray.500' }}
+                            _placeholder={{ color: 'purple.400' }}
                           />
                           <Field.ErrorText>
                             {getErrorMessage(personalForm.formState.errors.bio)}
@@ -466,6 +474,12 @@ export default function ProfilePage() {
                         type="button"
                         onClick={() => personalForm.reset()}
                         disabled={personalForm.formState.isSubmitting}
+                        bg="neomorphic.background"
+                        border="none"
+                        borderRadius="2xl"
+                        boxShadow="neo.sm"
+                        _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
+                        _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
                       >
                         Cancel
                       </Button>
@@ -474,6 +488,10 @@ export default function ProfilePage() {
                         colorPalette="purple"
                         loading={personalForm.formState.isSubmitting}
                         disabled={personalForm.formState.isSubmitting}
+                        borderRadius="2xl"
+                        boxShadow="neo.md"
+                        _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                        _active={{ transform: 'scale(0.98)', boxShadow: 'neo.sm' }}
                       >
                         {personalForm.formState.isSubmitting ? 'Saving...' : 'Save Changes'}
                       </Button>
@@ -611,14 +629,26 @@ export default function ProfilePage() {
                         type="button"
                         onClick={() => organizationForm.reset()}
                         disabled={organizationForm.formState.isSubmitting}
+                        color="purple.900"
+                        bg="neomorphic.background"
+                        border="none"
+                        borderRadius="2xl"
+                        boxShadow="neo.sm"
+                        _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                        _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
                       >
                         Cancel
                       </Button>
                       <Button
                         type="submit"
                         colorPalette="purple"
+                        color="white"
                         loading={organizationForm.formState.isSubmitting}
                         disabled={organizationForm.formState.isSubmitting}
+                        borderRadius="2xl"
+                        boxShadow="neo.md"
+                        _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                        _active={{ transform: 'scale(0.98)', boxShadow: 'neo.sm' }}
                       >
                         {organizationForm.formState.isSubmitting ? 'Saving...' : 'Save Changes'}
                       </Button>
@@ -646,7 +676,7 @@ export default function ProfilePage() {
                           name="emailNotifications"
                           control={notificationsForm.control}
                           render={({ field }) => (
-                            <HStack justify="space-between" p={4} border="1px" borderColor="gray.200" borderRadius="md">
+                            <HStack justify="space-between" p={4} border="1px" borderColor="purple.200" borderRadius="md">
                               <HStack gap={3}>
                                 <Icon as={FiMail} boxSize={5} color="purple.600" />
                                 <Box>
@@ -668,7 +698,7 @@ export default function ProfilePage() {
                           name="pushNotifications"
                           control={notificationsForm.control}
                           render={({ field }) => (
-                            <HStack justify="space-between" p={4} border="1px" borderColor="gray.200" borderRadius="md">
+                            <HStack justify="space-between" p={4} border="1px" borderColor="purple.200" borderRadius="md">
                               <HStack gap={3}>
                                 <Icon as={FiBell} boxSize={5} color="purple.600" />
                                 <Box>
@@ -690,7 +720,7 @@ export default function ProfilePage() {
                           name="smsNotifications"
                           control={notificationsForm.control}
                           render={({ field }) => (
-                            <HStack justify="space-between" p={4} border="1px" borderColor="gray.200" borderRadius="md">
+                            <HStack justify="space-between" p={4} border="1px" borderColor="purple.200" borderRadius="md">
                               <HStack gap={3}>
                                 <Icon as={FiSmartphone} boxSize={5} color="purple.600" />
                                 <Box>
@@ -719,7 +749,7 @@ export default function ProfilePage() {
                           name="deadlineReminders"
                           control={notificationsForm.control}
                           render={({ field }) => (
-                            <HStack justify="space-between" p={3} _hover={{ bg: 'gray.50' }} borderRadius="md">
+                            <HStack justify="space-between" p={3} _hover={{ bg: 'purple.50' }} borderRadius="md">
                               <Text color="purple.900">Deadline Reminders</Text>
                               <Switch.Root
                                 checked={field.value}
@@ -735,7 +765,7 @@ export default function ProfilePage() {
                           name="complianceAlerts"
                           control={notificationsForm.control}
                           render={({ field }) => (
-                            <HStack justify="space-between" p={3} _hover={{ bg: 'gray.50' }} borderRadius="md">
+                            <HStack justify="space-between" p={3} _hover={{ bg: 'purple.50' }} borderRadius="md">
                               <Text color="purple.900">Compliance Alerts</Text>
                               <Switch.Root
                                 checked={field.value}
@@ -751,7 +781,7 @@ export default function ProfilePage() {
                           name="grantMatches"
                           control={notificationsForm.control}
                           render={({ field }) => (
-                            <HStack justify="space-between" p={3} _hover={{ bg: 'gray.50' }} borderRadius="md">
+                            <HStack justify="space-between" p={3} _hover={{ bg: 'purple.50' }} borderRadius="md">
                               <Text color="purple.900">New Grant Matches</Text>
                               <Switch.Root
                                 checked={field.value}
@@ -767,7 +797,7 @@ export default function ProfilePage() {
                           name="weeklyDigest"
                           control={notificationsForm.control}
                           render={({ field }) => (
-                            <HStack justify="space-between" p={3} _hover={{ bg: 'gray.50' }} borderRadius="md">
+                            <HStack justify="space-between" p={3} _hover={{ bg: 'purple.50' }} borderRadius="md">
                               <Text color="purple.900">Weekly Activity Digest</Text>
                               <Switch.Root
                                 checked={field.value}
@@ -787,6 +817,12 @@ export default function ProfilePage() {
                         type="button"
                         onClick={() => notificationsForm.reset()}
                         disabled={notificationsForm.formState.isSubmitting}
+                        bg="neomorphic.background"
+                        border="none"
+                        borderRadius="2xl"
+                        boxShadow="neo.sm"
+                        _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
+                        _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
                       >
                         Reset to Default
                       </Button>
@@ -795,6 +831,10 @@ export default function ProfilePage() {
                         colorPalette="purple"
                         loading={notificationsForm.formState.isSubmitting}
                         disabled={notificationsForm.formState.isSubmitting}
+                        borderRadius="2xl"
+                        boxShadow="neo.md"
+                        _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                        _active={{ transform: 'scale(0.98)', boxShadow: 'neo.sm' }}
                       >
                         {notificationsForm.formState.isSubmitting ? 'Saving...' : 'Save Preferences'}
                       </Button>
@@ -829,7 +869,7 @@ export default function ProfilePage() {
                                 type="password"
                                 placeholder="Enter current password"
                                 color="purple.900"
-                                _placeholder={{ color: 'gray.500' }}
+                                _placeholder={{ color: 'purple.400' }}
                               />
                               <Field.ErrorText>
                                 {getErrorMessage(securityForm.formState.errors.currentPassword)}
@@ -849,7 +889,7 @@ export default function ProfilePage() {
                                 type="password"
                                 placeholder="Enter new password"
                                 color="purple.900"
-                                _placeholder={{ color: 'gray.500' }}
+                                _placeholder={{ color: 'purple.400' }}
                               />
                               <Field.ErrorText>
                                 {getErrorMessage(securityForm.formState.errors.newPassword)}
@@ -869,7 +909,7 @@ export default function ProfilePage() {
                                 type="password"
                                 placeholder="Confirm new password"
                                 color="purple.900"
-                                _placeholder={{ color: 'gray.500' }}
+                                _placeholder={{ color: 'purple.400' }}
                               />
                               <Field.ErrorText>
                                 {getErrorMessage(securityForm.formState.errors.confirmPassword)}
@@ -884,6 +924,10 @@ export default function ProfilePage() {
                           alignSelf="flex-start"
                           loading={securityForm.formState.isSubmitting}
                           disabled={securityForm.formState.isSubmitting}
+                          borderRadius="2xl"
+                          boxShadow="neo.md"
+                          _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                          _active={{ transform: 'scale(0.98)', boxShadow: 'neo.sm' }}
                         >
                           {securityForm.formState.isSubmitting ? 'Updating...' : 'Update Password'}
                         </Button>
@@ -918,15 +962,33 @@ export default function ProfilePage() {
                         </HStack>
 
                         {twoFactorEnabled && (
-                          <VStack gap={3} align="stretch" pt={3} borderTop="1px" borderColor="gray.200">
+                          <VStack gap={3} align="stretch" pt={3} borderTop="1px" borderColor="purple.200">
                             <Text fontSize="sm" color="purple.700">
                               Two-factor authentication is active. You'll need to enter a code from your authenticator app when signing in.
                             </Text>
                             <HStack gap={2}>
-                              <Button size="sm" variant="outline">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                color="purple.900"
+                                bg="neomorphic.background"
+                                border="none"
+                                borderRadius="2xl"
+                                boxShadow="neo.sm"
+                                _hover={{ boxShadow: 'neo.md', color: 'purple.700' }}
+                              >
                                 View Recovery Codes
                               </Button>
-                              <Button size="sm" variant="outline">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                color="purple.900"
+                                bg="neomorphic.background"
+                                border="none"
+                                borderRadius="2xl"
+                                boxShadow="neo.sm"
+                                _hover={{ boxShadow: 'neo.md', color: 'purple.700' }}
+                              >
                                 Reset 2FA
                               </Button>
                             </HStack>
@@ -941,7 +1003,7 @@ export default function ProfilePage() {
                   <Box>
                     <Heading size="sm" mb={4} color="purple.900">Active Sessions</Heading>
                     <VStack gap={3} align="stretch">
-                      <HStack justify="space-between" p={4} border="1px" borderColor="gray.200" borderRadius="md">
+                      <HStack justify="space-between" p={4} border="1px" borderColor="purple.200" borderRadius="md">
                         <HStack gap={3}>
                           <Icon as={FiGlobe} boxSize={5} color="purple.600" />
                           <Box>
@@ -952,7 +1014,7 @@ export default function ProfilePage() {
                         <Badge colorPalette="green">Active Now</Badge>
                       </HStack>
 
-                      <HStack justify="space-between" p={4} border="1px" borderColor="gray.200" borderRadius="md">
+                      <HStack justify="space-between" p={4} border="1px" borderColor="purple.200" borderRadius="md">
                         <HStack gap={3}>
                           <Icon as={FiSmartphone} boxSize={5} color="purple.600" />
                           <Box>
@@ -960,7 +1022,17 @@ export default function ProfilePage() {
                             <Text fontSize="sm" color="purple.700">Last active 2 hours ago</Text>
                           </Box>
                         </HStack>
-                        <Button size="sm" variant="outline" colorPalette="red">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          colorPalette="red"
+                          color="red.700"
+                          bg="neomorphic.background"
+                          border="none"
+                          borderRadius="2xl"
+                          boxShadow="neo.sm"
+                          _hover={{ boxShadow: 'neo.md', color: 'red.600' }}
+                        >
                           Revoke
                         </Button>
                       </HStack>
@@ -973,7 +1045,15 @@ export default function ProfilePage() {
                       <Text fontSize="sm" color="red.700" mb={4}>
                         Once you delete your account, there is no going back. Please be certain.
                       </Text>
-                      <Button size="sm" colorPalette="red" variant="outline">
+                      <Button
+                        size="sm"
+                        colorPalette="red"
+                        variant="outline"
+                        color="red.700"
+                        borderRadius="2xl"
+                        boxShadow="neo.sm"
+                        _hover={{ boxShadow: 'neo.md', color: 'red.600' }}
+                      >
                         Delete Account
                       </Button>
                     </Card.Body>

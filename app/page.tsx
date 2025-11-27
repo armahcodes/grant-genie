@@ -258,7 +258,7 @@ function LandingPageContent() {
   ]
 
   return (
-    <Box bg="white" overflow="hidden">
+    <Box bg="neomorphic.background" overflow="hidden">
       {/* Navigation */}
       <Box
         position="fixed"
@@ -266,14 +266,13 @@ function LandingPageContent() {
         left={0}
         right={0}
         zIndex={1000}
-        bg={scrollY > 50 ? "rgba(255, 255, 255, 0.98)" : "rgba(255, 255, 255, 0.95)"}
+        bg={scrollY > 50 ? "neomorphic.surface" : "neomorphic.background"}
         backdropFilter="blur(20px)"
-        borderBottom="1px"
-        borderColor={scrollY > 50 ? "gray.200" : "transparent"}
+        borderBottom="none"
         transitionProperty="background, border-color, box-shadow"
         transitionDuration="0.3s"
         transitionTimingFunction="cubic-bezier(0.4, 0, 0.2, 1)"
-        boxShadow={scrollY > 50 ? "0 4px 20px rgba(0,0,0,0.05)" : "none"}
+        boxShadow={scrollY > 50 ? "neo.sm" : "none"}
       >
         <Container maxW="container.xl" py={4} px={{ base: 4, md: 6 }} mx="auto">
           <Flex justify="space-between" align="center">
@@ -317,19 +316,26 @@ function LandingPageContent() {
                 color={deepIndigo}
                 fontWeight="semibold"
                 size={{ base: 'sm', md: 'md' }}
-                _hover={{ bg: 'gray.50' }}
+                bg="neomorphic.background"
+                boxShadow="neo.sm"
+                borderRadius="2xl"
+                _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
+                _active={{ boxShadow: 'neo.inset.sm' }}
                 transition="all 0.3s"
                 display={{ base: 'none', md: 'flex' }}
               >
                 Contact
               </Button>
               <Button
-                variant="ghost"
                 onClick={() => router.push('/auth/signin')}
                 color={deepIndigo}
                 fontWeight="semibold"
                 size={{ base: 'sm', md: 'md' }}
-                _hover={{ bg: 'gray.50', transform: 'translateY(-4px)', boxShadow: 'md' }}
+                bg="neomorphic.background"
+                boxShadow="neo.sm"
+                borderRadius="2xl"
+                _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
+                _active={{ boxShadow: 'neo.inset.sm' }}
                 transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
               >
                 Log In
@@ -341,13 +347,18 @@ function LandingPageContent() {
                 size={{ base: 'sm', md: 'md' }}
                 px={{ base: 4, md: 6 }}
                 fontWeight="semibold"
+                borderRadius="2xl"
+                boxShadow="neo.md"
                 _hover={{
                   bgGradient: `linear(to-r, #4BC5CC, ${softTeal})`,
                   transform: 'translateY(-2px)',
-                  boxShadow: '0 10px 25px rgba(92, 225, 230, 0.4)'
+                  boxShadow: 'neo.lg'
+                }}
+                _active={{
+                  transform: 'translateY(0)',
+                  boxShadow: 'neo.sm'
                 }}
                 transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
-                boxShadow="0 4px 15px rgba(92, 225, 230, 0.3)"
               >
                 <Text display={{ base: 'none', sm: 'inline' }}>Join Beta</Text>
                 <Text display={{ base: 'inline', sm: 'none' }}>Join</Text>
@@ -551,18 +562,19 @@ function LandingPageContent() {
                 <VStack
                   key={index}
                   p={{ base: 4, md: 6 }}
-                  borderRadius="2xl"
-                  bg="whiteAlpha.100"
-                  backdropFilter="blur(10px)"
-                  border="1px solid"
-                  borderColor="whiteAlpha.200"
+                  borderRadius="3xl"
+                  bg="neomorphic.surface"
+                  border="none"
+                  boxShadow="neo.md"
                   _hover={{
-                    bg: 'whiteAlpha.200',
                     transform: { base: 'translateY(-6px) scale(1.03)', md: 'translateY(-12px) scale(1.08)' },
-                    borderColor: softTeal,
-                    boxShadow: `0 25px 50px rgba(92, 225, 230, 0.4)`,
+                    boxShadow: 'neo.lg',
                   }}
-                  transitionProperty="transform, box-shadow, border-color, background"
+                  _active={{
+                    boxShadow: 'neo.inset.md',
+                    transform: 'scale(0.98)',
+                  }}
+                  transitionProperty="transform, box-shadow"
                   transitionDuration="0.4s"
                   transitionTimingFunction="cubic-bezier(0.4, 0, 0.2, 1)"
                   cursor="pointer"
@@ -571,10 +583,9 @@ function LandingPageContent() {
                       animation: `${float} ${8 + index}s ease-in-out infinite`,
                     }
                   }}
-                  boxShadow="0 8px 25px rgba(0,0,0,0.2)"
                 >
                   <Icon as={genie.icon} boxSize={{ base: 8, md: 10 }} color={softTeal} mb={2} />
-                  <Text fontSize={{ base: 'sm', md: 'sm' }} fontWeight="semibold" textAlign="center" lineHeight="short">
+                  <Text fontSize={{ base: 'sm', md: 'sm' }} fontWeight="semibold" textAlign="center" lineHeight="short" color={deepIndigo}>
                     {genie.name}
                   </Text>
                 </VStack>
@@ -611,7 +622,7 @@ function LandingPageContent() {
       </Box>
 
       {/* 2. THE PROBLEM */}
-      <Box py={{ base: 16, md: 24 }} bg="white" position="relative">
+      <Box py={{ base: 16, md: 24 }} bg="neomorphic.background" position="relative">
         <Container maxW="container.xl" px={{ base: 4, md: 6 }} mx="auto">
           <VStack gap={{ base: 12, md: 16 }} textAlign="center">
             <VStack gap={{ base: 6, md: 8 }} maxW="4xl" mx="auto">
@@ -622,6 +633,7 @@ function LandingPageContent() {
                 py={2}
                 borderRadius="full"
                 textTransform="none"
+                boxShadow="neo.sm"
               >
                 The Problem
               </Badge>
@@ -639,12 +651,11 @@ function LandingPageContent() {
               </Text>
               <Box
                 p={{ base: 5, md: 6 }}
-                bg="gray.50"
-                borderLeft="4px solid"
-                borderColor={softTeal}
-                borderRadius="lg"
+                bg="neomorphic.surface"
+                borderRadius="3xl"
                 maxW="3xl"
                 mx={{ base: 4, md: 'auto' }}
+                boxShadow="neo.inset.md"
               >
                 <Text fontSize={{ base: 'md', md: 'lg', lg: 'xl' }} color={deepIndigo} fontWeight="semibold" lineHeight="relaxed">
                   You didn't start this work to manage spreadsheets and sentences.
@@ -656,16 +667,18 @@ function LandingPageContent() {
 
             {/* Stat card */}
             <Box
-              bg="white"
+              bg="neomorphic.surface"
               p={{ base: 6, md: 8 }}
-              borderRadius="2xl"
-              boxShadow="0 20px 40px rgba(0,0,0,0.15)"
-              border="2px solid"
-              borderColor={softTeal}
-              backdropFilter="blur(10px)"
+              borderRadius="3xl"
+              boxShadow="neo.md"
               maxW="md"
               mx={{ base: 4, md: 'auto' }}
               w="full"
+              _hover={{
+                boxShadow: 'neo.lg',
+                transform: 'translateY(-4px)',
+              }}
+              transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
             >
               <VStack gap={3}>
                 <Text fontSize={{ base: '3xl', md: '4xl' }} fontWeight="bold" color={deepIndigo}>73%</Text>
@@ -679,7 +692,7 @@ function LandingPageContent() {
       </Box>
 
       {/* 3. THE HEADSPACEGENIE SOLUTION */}
-      <Box py={{ base: 16, md: 24 }} background="linear-gradient(to bottom right, #F8F9FF, white)" position="relative">
+      <Box py={{ base: 16, md: 24 }} bg="neomorphic.background" position="relative">
         <Container maxW="container.xl" px={{ base: 4, md: 6 }} mx="auto">
           <VStack gap={{ base: 12, md: 16 }}>
             <VStack gap={{ base: 4, md: 6 }} textAlign="center" maxW="4xl" mx="auto">
@@ -717,40 +730,34 @@ function LandingPageContent() {
               ].map((item, index) => (
                 <Card.Root
                   key={index}
-                  bg="white"
-                  border="2px solid"
-                  borderColor="gray.100"
-                  shadow="xl"
+                  bg="neomorphic.surface"
+                  border="none"
+                  boxShadow="neo.md"
                   _hover={{
-                    borderColor: softTeal,
                     transform: 'translateY(-8px)',
-                    boxShadow: `0 25px 50px rgba(92, 225, 230, 0.2)`,
+                    boxShadow: 'neo.lg',
                   }}
-                  transitionProperty="transform, box-shadow, border-color"
+                  _active={{
+                    boxShadow: 'neo.sm',
+                    transform: 'translateY(0)',
+                  }}
+                  transitionProperty="transform, box-shadow"
                   transitionDuration="0.4s"
                   transitionTimingFunction="cubic-bezier(0.4, 0, 0.2, 1)"
-                  borderRadius="2xl"
+                  borderRadius="3xl"
                   overflow="hidden"
                   position="relative"
                 >
-                  <Box
-                    position="absolute"
-                    top={0}
-                    left={0}
-                    right={0}
-                    h="4px"
-                    bgGradient={`linear(to-r, ${softTeal}, transparent)`}
-                  />
                   <Card.Body p={{ base: 8, md: 10 }}>
                     <VStack gap={6}>
                       <Flex
                         w={20}
                         h={20}
-                        bgGradient={`linear(135deg, ${softTeal}20, ${deepIndigo}10)`}
-                        borderRadius="2xl"
+                        bg="neomorphic.background"
+                        borderRadius="3xl"
                         align="center"
                         justify="center"
-                        boxShadow={`0 8px 20px ${softTeal}30`}
+                        boxShadow="neo.sm"
                       >
                         <Icon as={item.icon} boxSize={10} color={softTeal} />
                       </Flex>
@@ -768,7 +775,7 @@ function LandingPageContent() {
       </Box>
 
       {/* 4. MEET YOUR GENIES */}
-      <Box py={{ base: 16, md: 24 }} bg="white" id="genies">
+      <Box py={{ base: 16, md: 24 }} bg="neomorphic.background" id="genies">
         <Container maxW="container.xl" px={{ base: 4, md: 6 }} mx="auto">
           <VStack gap={{ base: 12, md: 16 }}>
             <VStack gap={{ base: 4, md: 6 }} textAlign="center" maxW="4xl" mx="auto">
@@ -802,18 +809,20 @@ function LandingPageContent() {
                 <Card.Root
                   key={index}
                   w="full"
-                  bg="white"
-                  border="1px solid"
-                  borderColor="gray.200"
+                  bg="neomorphic.surface"
+                  border="none"
+                  boxShadow="neo.md"
                   _hover={{
-                    boxShadow: '0 20px 40px rgba(0,0,0,0.08)',
-                    borderColor: softTeal,
+                    boxShadow: 'neo.lg',
                     transform: { base: 'none', md: 'translateX(8px)' },
                   }}
-                  transitionProperty="transform, box-shadow, border-color"
+                  _active={{
+                    boxShadow: 'neo.sm',
+                  }}
+                  transitionProperty="transform, box-shadow"
                   transitionDuration="0.4s"
                   transitionTimingFunction="cubic-bezier(0.4, 0, 0.2, 1)"
-                  borderRadius="2xl"
+                  borderRadius="3xl"
                 >
                   <Card.Body p={{ base: 6, md: 8 }}>
                     <VStack gap={4} align="stretch" display={{ base: 'flex', md: 'none' }}>
@@ -883,11 +892,10 @@ function LandingPageContent() {
             <Box
               mt={{ base: 6, md: 8 }}
               p={{ base: 6, md: 10 }}
-              bgGradient={`linear(135deg, ${deepIndigo}05, ${softTeal}05)`}
-              borderRadius="2xl"
+              bg="neomorphic.surface"
+              borderRadius="3xl"
               textAlign="center"
-              border="2px solid"
-              borderColor="rgba(92, 225, 230, 0.3)"
+              boxShadow="neo.inset.md"
               mx={{ base: 4, md: 0 }}
             >
               <Text fontSize={{ base: 'lg', md: 'xl', lg: '2xl' }} color={deepIndigo} fontWeight="semibold" lineHeight="relaxed">
@@ -899,7 +907,7 @@ function LandingPageContent() {
       </Box>
 
       {/* 5. THE HEADSPACE ROI */}
-      <Box py={{ base: 16, md: 24 }} background="linear-gradient(to bottom right, #F8F9FF, white)">
+      <Box py={{ base: 16, md: 24 }} bg="neomorphic.background">
         <Container maxW="container.xl" px={{ base: 4, md: 6 }} mx="auto">
           <VStack gap={{ base: 12, md: 16 }}>
             <VStack gap={{ base: 4, md: 6 }} textAlign="center" maxW="4xl" mx="auto">
@@ -932,29 +940,32 @@ function LandingPageContent() {
               {roiItems.map((item, index) => (
                 <Card.Root
                   key={index}
-                  bg="white"
-                  border="1px solid"
-                  borderColor="gray.200"
-                  shadow="md"
+                  bg="neomorphic.surface"
+                  border="none"
+                  boxShadow="neo.md"
                   _hover={{
                     transform: 'translateY(-8px) scale(1.02)',
-                    boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-                    borderColor: softTeal,
+                    boxShadow: 'neo.lg',
                   }}
-                  transitionProperty="transform, box-shadow, border-color"
+                  _active={{
+                    boxShadow: 'neo.sm',
+                    transform: 'scale(0.98)',
+                  }}
+                  transitionProperty="transform, box-shadow"
                   transitionDuration="0.4s"
                   transitionTimingFunction="cubic-bezier(0.4, 0, 0.2, 1)"
-                  borderRadius="2xl"
+                  borderRadius="3xl"
                 >
                   <Card.Body p={{ base: 6, md: 8 }}>
                     <VStack gap={5}>
                       <Flex
                         w={16}
                         h={16}
-                        bgGradient={`linear(135deg, ${softTeal}20, ${deepIndigo}10)`}
-                        borderRadius="xl"
+                        bg="neomorphic.background"
+                        borderRadius="2xl"
                         align="center"
                         justify="center"
+                        boxShadow="neo.sm"
                       >
                         <Icon as={item.icon} boxSize={8} color={softTeal} />
                       </Flex>
@@ -972,7 +983,7 @@ function LandingPageContent() {
       </Box>
 
       {/* 6. WHY HEADSPACEGENIE.AI IS DIFFERENT */}
-      <Box py={{ base: 16, md: 24 }} background="linear-gradient(to bottom right, #F8F9FF, white)">
+      <Box py={{ base: 16, md: 24 }} bg="neomorphic.background">
         <Container maxW="container.xl" px={{ base: 4, md: 6 }} mx="auto">
           <VStack gap={{ base: 12, md: 16 }}>
             <VStack gap={{ base: 4, md: 6 }} textAlign="center" maxW="4xl" mx="auto">
@@ -1002,28 +1013,32 @@ function LandingPageContent() {
               {differentiators.map((item, index) => (
                 <Card.Root
                   key={index}
-                  bg="white"
-                  border="1px solid"
-                  borderColor="gray.200"
+                  bg="neomorphic.surface"
+                  border="none"
+                  boxShadow="neo.md"
                   _hover={{
                     transform: 'translateY(-8px)',
-                    boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-                    borderColor: softTeal,
+                    boxShadow: 'neo.lg',
                   }}
-                  transitionProperty="transform, box-shadow, border-color"
+                  _active={{
+                    boxShadow: 'neo.sm',
+                    transform: 'translateY(0)',
+                  }}
+                  transitionProperty="transform, box-shadow"
                   transitionDuration="0.4s"
                   transitionTimingFunction="cubic-bezier(0.4, 0, 0.2, 1)"
-                  borderRadius="2xl"
+                  borderRadius="3xl"
                 >
                   <Card.Body p={8}>
                     <VStack align="start" gap={5}>
                       <Flex
                         w={12}
                         h={12}
-                        bgGradient={`linear(135deg, ${softTeal}20, ${deepIndigo}10)`}
-                        borderRadius="xl"
+                        bg="neomorphic.background"
+                        borderRadius="2xl"
                         align="center"
                         justify="center"
+                        boxShadow="neo.sm"
                       >
                         <Icon as={FiCheck} boxSize={6} color={softTeal} fontWeight="bold" strokeWidth={3} />
                       </Flex>
@@ -1134,7 +1149,7 @@ function LandingPageContent() {
       </Box>
 
       {/* 8. PRICING & TIERS */}
-      <Box py={{ base: 16, md: 28 }} bg="white" id="pricing">
+      <Box py={{ base: 16, md: 28 }} bg="neomorphic.background" id="pricing">
         <Container maxW="container.xl" px={{ base: 4, md: 6 }} mx="auto">
           <VStack gap={{ base: 12, md: 16 }}>
             <VStack gap={{ base: 4, md: 6 }} textAlign="center">
@@ -1166,20 +1181,23 @@ function LandingPageContent() {
               {pricingPlans.map((plan, index) => (
                 <Card.Root
                   key={index}
-                  bg="white"
-                  borderWidth="2px"
-                  borderColor={plan.highlighted ? softTeal : 'gray.200'}
-                  shadow={plan.highlighted ? '2xl' : 'lg'}
+                  bg="neomorphic.surface"
+                  border="none"
+                  boxShadow={plan.highlighted ? 'neo.lg' : 'neo.md'}
                   transform={{ base: 'scale(1)', md: plan.highlighted ? 'scale(1.05)' : 'scale(1)' }}
                   _hover={{
-                    boxShadow: plan.highlighted ? '0 25px 50px rgba(92, 225, 230, 0.3)' : '0 20px 40px rgba(0,0,0,0.1)',
+                    boxShadow: plan.highlighted ? 'neo.xl' : 'neo.lg',
                     transform: { base: 'scale(1)', md: plan.highlighted ? 'scale(1.08)' : 'scale(1.03)' },
+                  }}
+                  _active={{
+                    boxShadow: plan.highlighted ? 'neo.md' : 'neo.sm',
+                    transform: 'scale(0.98)',
                   }}
                   transitionProperty="transform, box-shadow"
                   transitionDuration="0.4s"
                   transitionTimingFunction="cubic-bezier(0.4, 0, 0.2, 1)"
                   position="relative"
-                  borderRadius="2xl"
+                  borderRadius="3xl"
                   overflow="visible"
                 >
                   {plan.highlighted && (
@@ -1235,19 +1253,24 @@ function LandingPageContent() {
 
                       <Button
                         size="lg"
-                        bg={plan.highlighted ? `linear-gradient(135deg, ${softTeal}, ${tealVariant})` : 'gray.100'}
+                        bg={plan.highlighted ? `linear-gradient(135deg, ${softTeal}, ${tealVariant})` : 'neomorphic.background'}
                         bgGradient={plan.highlighted ? `linear(135deg, ${softTeal}, ${tealVariant})` : undefined}
                         color={plan.highlighted ? 'white' : deepIndigo}
                         onClick={() => router.push('/auth/signup')}
                         w="full"
                         py={6}
                         fontWeight="semibold"
+                        borderRadius="2xl"
+                        boxShadow={plan.highlighted ? 'neo.md' : 'neo.sm'}
                         _hover={{
                           transform: 'translateY(-2px)',
-                          boxShadow: plan.highlighted ? `0 10px 25px ${softTeal}40` : '0 4px 15px rgba(0,0,0,0.1)',
+                          boxShadow: plan.highlighted ? 'neo.lg' : 'neo.md',
+                        }}
+                        _active={{
+                          transform: 'translateY(0)',
+                          boxShadow: plan.highlighted ? 'neo.sm' : 'neo.inset.sm',
                         }}
                         transition="all 0.3s"
-                        borderRadius="xl"
                       >
                         {plan.name === 'Enterprise / Custom' ? 'Contact Sales' : 'Start Free Trial'}
                       </Button>
@@ -1277,7 +1300,7 @@ function LandingPageContent() {
       </Box>
 
       {/* 8.5 FAQ SECTION */}
-      <Box py={{ base: 16, md: 24 }} bg="gray.50">
+      <Box py={{ base: 16, md: 24 }} bg="neomorphic.background">
         <Container maxW="container.xl" px={{ base: 4, md: 6 }} mx="auto">
           <VStack gap={12}>
             <VStack gap={6} textAlign="center">
@@ -1294,13 +1317,13 @@ function LandingPageContent() {
                 <Box
                   key={index}
                   w="full"
-                  bg="white"
-                  borderRadius="xl"
-                  border="1px solid"
-                  borderColor="gray.200"
+                  bg="neomorphic.surface"
+                  borderRadius="3xl"
+                  border="none"
                   overflow="hidden"
                   transition="all 0.3s"
-                  _hover={{ borderColor: softTeal, boxShadow: 'md' }}
+                  boxShadow="neo.md"
+                  _hover={{ boxShadow: 'neo.lg' }}
                 >
                   <Flex
                     p={6}
@@ -1335,10 +1358,13 @@ function LandingPageContent() {
                 Still have questions?
               </Text>
               <Button
-                variant="outline"
-                borderColor={softTeal}
+                bg="neomorphic.background"
                 color={deepIndigo}
-                _hover={{ bg: `${softTeal}10` }}
+                boxShadow="neo.md"
+                borderRadius="2xl"
+                _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+                transition="all 0.3s"
                 onClick={() => window.location.href = 'mailto:hello@headspacegenie.ai?subject=Question about HeadspaceGenie'}
               >
                 Contact Us
@@ -1565,12 +1591,11 @@ function LandingPageContent() {
           left={0}
           right={0}
           p={4}
-          bg="white"
-          boxShadow="0 -4px 20px rgba(0,0,0,0.1)"
+          bg="neomorphic.surface"
+          boxShadow="neo.lg"
           display={{ base: 'block', md: 'none' }}
           zIndex={999}
-          borderTop="1px solid"
-          borderColor="gray.200"
+          borderTop="none"
         >
           <Button
             w="full"
@@ -1579,8 +1604,14 @@ function LandingPageContent() {
             color="white"
             onClick={handleCTAClick}
             loading={isLoading}
+            borderRadius="2xl"
+            boxShadow="neo.md"
             _hover={{
               bgGradient: `linear(to-r, ${tealVariant}, ${softTeal})`,
+              boxShadow: 'neo.lg',
+            }}
+            _active={{
+              boxShadow: 'neo.sm',
             }}
           >
             Start Free Trial

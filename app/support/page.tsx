@@ -107,7 +107,7 @@ export default function SupportPage() {
           <Grid templateColumns={{ base: '1fr', lg: '2fr 1fr' }} gap={8}>
             {/* Left Column - FAQs */}
             <GridItem>
-              <Card.Root>
+              <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
                 <Card.Header>
                   <Heading size="md" color="purple.900">Frequently Asked Questions</Heading>
                 </Card.Header>
@@ -116,14 +116,15 @@ export default function SupportPage() {
                     {faqs.map((faq) => (
                       <Accordion.Item key={faq.value} value={faq.value} border="none" mb={2}>
                         <Accordion.ItemTrigger
-                          bg={accordionBg}
-                          border="1px"
-                          borderColor={borderColor}
-                          borderRadius="md"
-                          _hover={{ bg: 'purple.50' }}
-                          _expanded={{ bg: 'purple.50' }}
+                          bg="neomorphic.background"
+                          border="none"
+                          borderRadius="2xl"
+                          boxShadow="neo.sm"
+                          _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
+                          _expanded={{ boxShadow: 'neo.inset.sm' }}
                           py={4}
                           cursor="pointer"
+                          transition="all 0.3s"
                         >
                           <Box flex="1" textAlign="left" fontWeight="medium" color="purple.900">
                             {faq.question}
@@ -144,7 +145,7 @@ export default function SupportPage() {
             <GridItem>
               <VStack gap={6} align="stretch">
                 {/* Contact Support */}
-                <Card.Root>
+                <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
                   <Card.Header>
                     <Heading size="md" color="purple.900">Contact Support</Heading>
                   </Card.Header>
@@ -200,7 +201,16 @@ export default function SupportPage() {
                           <Text fontSize="sm" color="purple.600" mb={3}>
                             9am-5pm EST
                           </Text>
-                          <Button colorPalette="purple" w="full" size="sm">
+                          <Button
+                            colorPalette="purple"
+                            color="white"
+                            w="full"
+                            size="sm"
+                            borderRadius="2xl"
+                            boxShadow="neo.md"
+                            _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                            _active={{ transform: 'scale(0.98)', boxShadow: 'neo.sm' }}
+                          >
                             Start Live Chat
                           </Button>
                         </Box>
@@ -210,7 +220,7 @@ export default function SupportPage() {
                 </Card.Root>
 
                 {/* Community Resources */}
-                <Card.Root>
+                <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
                   <Card.Header>
                     <Heading size="md" color="purple.900">Community Resources</Heading>
                   </Card.Header>
@@ -220,10 +230,12 @@ export default function SupportPage() {
                         <HStack
                           key={index}
                           p={3}
-                          borderRadius="md"
+                          bg="neomorphic.background"
+                          borderRadius="2xl"
+                          boxShadow="neo.sm"
                           cursor="pointer"
-                          _hover={{ bg: 'purple.50' }}
-                          transition="all 0.2s"
+                          _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
+                          transition="all 0.3s"
                         >
                           <Icon as={resource.icon} boxSize={5} color="purple.600" />
                           <Text fontSize="sm" color="purple.900">{resource.name}</Text>
@@ -234,7 +246,7 @@ export default function SupportPage() {
                 </Card.Root>
 
                 {/* Quick Actions */}
-                <Card.Root>
+                <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
                   <Card.Header>
                     <Heading size="md" color="purple.900">Quick Actions</Heading>
                   </Card.Header>
@@ -244,10 +256,12 @@ export default function SupportPage() {
                         <HStack
                           key={index}
                           p={3}
-                          borderRadius="md"
+                          bg="neomorphic.background"
+                          borderRadius="2xl"
+                          boxShadow="neo.sm"
                           cursor="pointer"
-                          _hover={{ bg: 'purple.50' }}
-                          transition="all 0.2s"
+                          _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
+                          transition="all 0.3s"
                         >
                           <Icon as={action.icon} boxSize={5} color="purple.600" />
                           <Text fontSize="sm" color="purple.900">{action.name}</Text>

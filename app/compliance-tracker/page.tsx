@@ -21,7 +21,7 @@ import {
   Stack,
   useBreakpointValue,
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useUser } from '@stackframe/stack'
 import { formatDate } from '@/lib/utils/dates'
 import { Breadcrumb } from '@/components/ui/Breadcrumb'
@@ -51,16 +51,90 @@ export default function ComplianceTrackerPage() {
   const tasks = complianceData?.items || []
 
   const [uploadingTaskId, setUploadingTaskId] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null)
   const isMobile = useBreakpointValue({ base: true, md: false })
 
   const handleFileUpload = async (taskId: string) => {
-    setUploadingTaskId(taskId)
-    
-    // Simulate file upload
-    setTimeout(() => {
+    setSelectedTaskId(taskId)
+    fileInputRef.current?.click()
+  }
+
+  const onFileSelected = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file || !selectedTaskId) return
+
+    setUploadingTaskId(selectedTaskId)
+
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('taskId', selectedTaskId)
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (response.ok) {
+        toast.complianceDocumentUploaded()
+      } else {
+        toast.error('Failed to upload document', 'Upload Error')
+      }
+    } catch {
+      toast.error('Failed to upload document', 'Upload Error')
+    } finally {
       setUploadingTaskId(null)
-      toast.complianceDocumentUploaded()
-    }, 2000)
+      setSelectedTaskId(null)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    }
+  }
+
+  const handleExportReport = () => {
+    const csvContent = [
+      ['Requirement', 'Status', 'Priority', 'Due Date', 'Grant'].join(','),
+      ...tasks.map(task => [
+        `"${task.requirement}"`,
+        task.status,
+        task.priority,
+        task.dueDate ? formatDate(task.dueDate) : '',
+        `"${task.grantName || ''}"`,
+      ].join(','))
+    ].join('\n')
+
+    const blob = new Blob([csvContent], { type: 'text/csv' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `compliance_report_${new Date().toISOString().split('T')[0]}.csv`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+    toast.success('Report exported successfully', 'Export Complete')
+  }
+
+  const handleDownloadTemplate = (templateName: string) => {
+    // Generate a simple template based on the type
+    const templates: Record<string, string> = {
+      'Financial Report': 'Organization Name:,\nReport Period:,\nTotal Expenses:,\nGrant Amount Used:,\nRemaining Balance:,',
+      'Progress Report': 'Project Name:,\nReporting Period:,\nObjectives Met:,\nChallenges:,\nNext Steps:,',
+      'Annual Report': 'Fiscal Year:,\nProgram Summary:,\nBeneficiaries Served:,\nOutcomes Achieved:,\nLessons Learned:,',
+    }
+
+    const content = templates[templateName] || 'Template content not available'
+    const blob = new Blob([content], { type: 'text/csv' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${templateName.toLowerCase().replace(/\s+/g, '_')}_template.csv`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+    toast.success(`${templateName} template downloaded`, 'Download Complete')
   }
 
   const getStatusColor = (status: string) => {
@@ -111,6 +185,14 @@ export default function ComplianceTrackerPage() {
 
   return (
     <MainLayout>
+      {/* Hidden file input for document uploads */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt"
+        hidden
+        onChange={onFileSelected}
+      />
       <Container maxW="container.xl" py={8}>
         <VStack gap={8} align="stretch">
           {/* Breadcrumb */}
@@ -135,7 +217,16 @@ export default function ComplianceTrackerPage() {
             <LoadingSkeleton variant="card" count={4} height="120px" />
           ) : (
           <SimpleGrid columns={{ base: 1, md: 4 }} gap={6}>
-            <Card.Root role="article" aria-label={`${completedTasks} completed compliance tasks`}>
+            <Card.Root
+              role="article"
+              aria-label={`${completedTasks} completed compliance tasks`}
+              bg="neomorphic.surface"
+              borderRadius="3xl"
+              boxShadow="neo.md"
+              border="none"
+              _hover={{ transform: 'translateY(-4px)', boxShadow: 'neo.lg' }}
+              transition="all 0.3s"
+            >
               <Card.Body>
                 <VStack align="start" gap={2}>
                   <Icon as={FiCheckCircle} boxSize={8} color="green.500" aria-hidden="true" />
@@ -149,7 +240,16 @@ export default function ComplianceTrackerPage() {
               </Card.Body>
             </Card.Root>
 
-            <Card.Root role="article" aria-label={`${pendingTasks.length} pending compliance tasks`}>
+            <Card.Root
+              role="article"
+              aria-label={`${pendingTasks.length} pending compliance tasks`}
+              bg="neomorphic.surface"
+              borderRadius="3xl"
+              boxShadow="neo.md"
+              border="none"
+              _hover={{ transform: 'translateY(-4px)', boxShadow: 'neo.lg' }}
+              transition="all 0.3s"
+            >
               <Card.Body>
                 <VStack align="start" gap={2}>
                   <Icon as={FiClock} boxSize={8} color="purple.500" aria-hidden="true" />
@@ -163,7 +263,16 @@ export default function ComplianceTrackerPage() {
               </Card.Body>
             </Card.Root>
 
-            <Card.Root role="article" aria-label={`${overdueTasks.length} overdue compliance tasks requiring immediate attention`}>
+            <Card.Root
+              role="article"
+              aria-label={`${overdueTasks.length} overdue compliance tasks requiring immediate attention`}
+              bg="neomorphic.surface"
+              borderRadius="3xl"
+              boxShadow="neo.md"
+              border="none"
+              _hover={{ transform: 'translateY(-4px)', boxShadow: 'neo.lg' }}
+              transition="all 0.3s"
+            >
               <Card.Body>
                 <VStack align="start" gap={2}>
                   <Icon as={FiAlertCircle} boxSize={8} color="red.500" aria-hidden="true" />
@@ -177,7 +286,16 @@ export default function ComplianceTrackerPage() {
               </Card.Body>
             </Card.Root>
 
-            <Card.Root role="article" aria-label={`Compliance rate is ${complianceRate} percent`}>
+            <Card.Root
+              role="article"
+              aria-label={`Compliance rate is ${complianceRate} percent`}
+              bg="neomorphic.surface"
+              borderRadius="3xl"
+              boxShadow="neo.md"
+              border="none"
+              _hover={{ transform: 'translateY(-4px)', boxShadow: 'neo.lg' }}
+              transition="all 0.3s"
+            >
               <Card.Body>
                 <VStack align="start" gap={2}>
                   <Text fontSize="sm" color="purple.700" mb={1}>
@@ -205,7 +323,7 @@ export default function ComplianceTrackerPage() {
           )}
 
           {/* Tabs for Different Views */}
-          <Card.Root>
+          <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
             <Card.Body>
               <Tabs.Root defaultValue="all">
                 <Tabs.List>
@@ -228,7 +346,15 @@ export default function ComplianceTrackerPage() {
                     {isMobile ? (
                       <VStack gap={4} align="stretch">
                         {tasks.map((task) => (
-                          <Card.Root key={task.id}>
+                          <Card.Root
+                            key={task.id}
+                            bg="neomorphic.background"
+                            borderRadius="2xl"
+                            boxShadow="neo.sm"
+                            border="none"
+                            _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
+                            transition="all 0.3s"
+                          >
                             <Card.Body>
                               <VStack gap={3} align="stretch">
                                 <Flex justify="space-between" align="start">
@@ -263,11 +389,27 @@ export default function ComplianceTrackerPage() {
                                     flex={1}
                                     onClick={() => handleFileUpload(task.id)}
                                     disabled={uploadingTaskId === task.id}
+                                    colorPalette="purple"
+                                    borderRadius="2xl"
+                                    boxShadow="neo.sm"
+                                    _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
+                                    _active={{ transform: 'scale(0.98)', boxShadow: 'neo.inset.sm' }}
                                   >
                                     <Icon as={FiUpload} />
                                     {uploadingTaskId === task.id ? 'Uploading...' : 'Upload'}
                                   </Button>
-                                  <Button size="sm" flex={1} variant="outline">
+                                  <Button
+                                    size="sm"
+                                    flex={1}
+                                    variant="outline"
+                                    color="purple.900"
+                                    bg="neomorphic.background"
+                                    border="none"
+                                    borderRadius="2xl"
+                                    boxShadow="neo.sm"
+                                    _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                                    _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+                                  >
                                     View
                                   </Button>
                                 </HStack>
@@ -327,6 +469,11 @@ export default function ComplianceTrackerPage() {
                                     aria-label={`Upload compliance document for ${task.requirement}`}
                                     onClick={() => handleFileUpload(task.id)}
                                     disabled={uploadingTaskId === task.id}
+                                    colorPalette="purple"
+                                    borderRadius="2xl"
+                                    boxShadow="neo.sm"
+                                    _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
+                                    _active={{ transform: 'scale(0.98)', boxShadow: 'neo.inset.sm' }}
                                     _focusVisible={{
                                       outline: '3px solid',
                                       outlineColor: 'purple.500',
@@ -357,7 +504,13 @@ export default function ComplianceTrackerPage() {
                                   <Button
                                     size="sm"
                                     variant="ghost"
+                                    color="purple.900"
                                     aria-label={`View details for ${task.requirement}`}
+                                    bg="neomorphic.background"
+                                    borderRadius="2xl"
+                                    boxShadow="neo.sm"
+                                    _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                                    _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
                                     _focusVisible={{
                                       outline: '3px solid',
                                       outlineColor: 'purple.500',
@@ -384,7 +537,17 @@ export default function ComplianceTrackerPage() {
                     ) : (
                     <VStack gap={4} align="stretch">
                       {overdueTasks.map((task) => (
-                        <Card.Root key={task.id} borderLeft="4px solid" borderLeftColor="red.500">
+                        <Card.Root
+                          key={task.id}
+                          bg="neomorphic.surface"
+                          borderRadius="3xl"
+                          boxShadow="neo.md"
+                          border="none"
+                          borderLeft="4px solid"
+                          borderLeftColor="red.500"
+                          _hover={{ transform: 'translateY(-2px)', boxShadow: 'neo.lg' }}
+                          transition="all 0.3s"
+                        >
                           <Card.Body>
                             <HStack justify="space-between">
                               <VStack align="start" gap={2}>
@@ -404,6 +567,10 @@ export default function ComplianceTrackerPage() {
                                 size="lg"
                                 colorPalette="red"
                                 aria-label={`Submit overdue task: ${task.requirement}`}
+                                borderRadius="2xl"
+                                boxShadow="neo.md"
+                                _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                                _active={{ transform: 'scale(0.98)', boxShadow: 'neo.sm' }}
                                 _focusVisible={{
                                   outline: '3px solid',
                                   outlineColor: 'red.500',
@@ -430,7 +597,17 @@ export default function ComplianceTrackerPage() {
                     ) : (
                     <VStack gap={4} align="stretch">
                       {pendingTasks.map((task) => (
-                        <Card.Root key={task.id} borderLeft="4px solid" borderLeftColor="purple.500">
+                        <Card.Root
+                          key={task.id}
+                          bg="neomorphic.surface"
+                          borderRadius="3xl"
+                          boxShadow="neo.md"
+                          border="none"
+                          borderLeft="4px solid"
+                          borderLeftColor="purple.500"
+                          _hover={{ transform: 'translateY(-2px)', boxShadow: 'neo.lg' }}
+                          transition="all 0.3s"
+                        >
                           <Card.Body>
                             <HStack justify="space-between">
                               <VStack align="start" gap={2}>
@@ -453,6 +630,13 @@ export default function ComplianceTrackerPage() {
                                   size="md"
                                   variant="outline"
                                   aria-label={`Download template for ${task.requirement}`}
+                                  onClick={() => handleDownloadTemplate(task.requirement)}
+                                  bg="neomorphic.background"
+                                  border="none"
+                                  borderRadius="2xl"
+                                  boxShadow="neo.sm"
+                                  _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
+                                  _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
                                   _focusVisible={{
                                     outline: '3px solid',
                                     outlineColor: 'purple.500',
@@ -460,12 +644,18 @@ export default function ComplianceTrackerPage() {
                                   }}
                                 >
                                   <Icon as={FiDownload} />
-                                  Download Template
+                                  Template
                                 </Button>
                                 <Button
                                   size="lg"
                                   colorPalette="purple"
                                   aria-label={`Upload document for ${task.requirement}`}
+                                  onClick={() => handleFileUpload(task.id)}
+                                  loading={uploadingTaskId === task.id}
+                                  borderRadius="2xl"
+                                  boxShadow="neo.md"
+                                  _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                                  _active={{ transform: 'scale(0.98)', boxShadow: 'neo.sm' }}
                                   _focusVisible={{
                                     outline: '3px solid',
                                     outlineColor: 'purple.500',
@@ -473,7 +663,7 @@ export default function ComplianceTrackerPage() {
                                   }}
                                 >
                                   <Icon as={FiUpload} />
-                                  Upload
+                                  {uploadingTaskId === task.id ? 'Uploading...' : 'Upload'}
                                 </Button>
                               </HStack>
                             </HStack>
@@ -488,7 +678,17 @@ export default function ComplianceTrackerPage() {
                   <Tabs.Content value="completed" px={0}>
                     <VStack gap={4} align="stretch">
                       {completedTasksList.map((task) => (
-                        <Card.Root key={task.id} borderLeft="4px solid" borderLeftColor="green.500">
+                        <Card.Root
+                          key={task.id}
+                          bg="neomorphic.surface"
+                          borderRadius="3xl"
+                          boxShadow="neo.md"
+                          border="none"
+                          borderLeft="4px solid"
+                          borderLeftColor="green.500"
+                          _hover={{ transform: 'translateY(-2px)', boxShadow: 'neo.lg' }}
+                          transition="all 0.3s"
+                        >
                           <Card.Body>
                             <HStack justify="space-between">
                               <VStack align="start" gap={2}>
@@ -508,6 +708,12 @@ export default function ComplianceTrackerPage() {
                                 size="md"
                                 variant="outline"
                                 aria-label={`Download receipt for ${task.requirement}`}
+                                bg="neomorphic.background"
+                                border="none"
+                                borderRadius="2xl"
+                                boxShadow="neo.sm"
+                                _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
+                                _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
                                 _focusVisible={{
                                   outline: '3px solid',
                                   outlineColor: 'purple.500',
@@ -530,7 +736,14 @@ export default function ComplianceTrackerPage() {
 
           {/* Quick Actions */}
           <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
-            <Card.Root>
+            <Card.Root
+              bg="neomorphic.surface"
+              borderRadius="3xl"
+              boxShadow="neo.md"
+              border="none"
+              _hover={{ transform: 'translateY(-4px)', boxShadow: 'neo.lg' }}
+              transition="all 0.3s"
+            >
               <Card.Body>
                 <VStack gap={3}>
                   <Icon as={FiUpload} boxSize={8} color="purple.500" />
@@ -550,6 +763,10 @@ export default function ComplianceTrackerPage() {
                         toast.complianceDocumentUploaded()
                       }, 2000)
                     }}
+                    borderRadius="2xl"
+                    boxShadow="neo.md"
+                    _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                    _active={{ transform: 'scale(0.98)', boxShadow: 'neo.sm' }}
                     _focusVisible={{
                       outline: '3px solid',
                       outlineColor: 'purple.500',
@@ -562,7 +779,14 @@ export default function ComplianceTrackerPage() {
               </Card.Body>
             </Card.Root>
 
-            <Card.Root>
+            <Card.Root
+              bg="neomorphic.surface"
+              borderRadius="3xl"
+              boxShadow="neo.md"
+              border="none"
+              _hover={{ transform: 'translateY(-4px)', boxShadow: 'neo.lg' }}
+              transition="all 0.3s"
+            >
               <Card.Body>
                 <VStack gap={3}>
                   <Icon as={FiCalendar} boxSize={8} color="purple.500" />
@@ -576,6 +800,10 @@ export default function ComplianceTrackerPage() {
                     w="full"
                     aria-label="Configure automatic deadline reminders"
                     onClick={() => toast.complianceReminderSet()}
+                    borderRadius="2xl"
+                    boxShadow="neo.md"
+                    _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                    _active={{ transform: 'scale(0.98)', boxShadow: 'neo.sm' }}
                     _focusVisible={{
                       outline: '3px solid',
                       outlineColor: 'purple.500',
@@ -588,7 +816,14 @@ export default function ComplianceTrackerPage() {
               </Card.Body>
             </Card.Root>
 
-            <Card.Root>
+            <Card.Root
+              bg="neomorphic.surface"
+              borderRadius="3xl"
+              boxShadow="neo.md"
+              border="none"
+              _hover={{ transform: 'translateY(-4px)', boxShadow: 'neo.lg' }}
+              transition="all 0.3s"
+            >
               <Card.Body>
                 <VStack gap={3}>
                   <Icon as={FiDownload} boxSize={8} color="purple.500" />
@@ -600,14 +835,20 @@ export default function ComplianceTrackerPage() {
                     size="md"
                     colorPalette="purple"
                     w="full"
+                    onClick={handleExportReport}
                     aria-label="Download compliance status report"
+                    borderRadius="2xl"
+                    boxShadow="neo.md"
+                    _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                    _active={{ transform: 'scale(0.98)', boxShadow: 'neo.sm' }}
                     _focusVisible={{
                       outline: '3px solid',
                       outlineColor: 'purple.500',
                       outlineOffset: '2px'
                     }}
                   >
-                    Generate Report
+                    <Icon as={FiDownload} mr={2} />
+                    Export CSV
                   </Button>
                 </VStack>
               </Card.Body>

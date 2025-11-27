@@ -22,11 +22,11 @@ import {
   Checkbox,
   Badge,
 } from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { MdPerson, MdBusiness, MdNotifications, MdSecurity, MdCamera } from 'react-icons/md'
+import { FiUser, FiBriefcase, FiBell, FiShield, FiCamera } from 'react-icons/fi'
 import MainLayout from '@/components/layout/MainLayout'
 import { useAppToast } from '@/lib/utils/toast'
 import {
@@ -79,10 +79,16 @@ const SectionTab = ({ icon, label, isActive, onClick }: SectionTabProps) => {
       variant="ghost"
       justifyContent="flex-start"
       w="full"
-      bg={isActive ? 'purple.50' : 'transparent'}
-      color={isActive ? 'purple.600' : 'inherit'}
+      bg={isActive ? 'neomorphic.background' : 'transparent'}
+      color={isActive ? 'purple.600' : 'purple.900'}
       fontWeight={isActive ? 'semibold' : 'medium'}
-      _hover={{ bg: isActive ? 'purple.50' : 'gray.100' }}
+      border="none"
+      borderRadius="2xl"
+      boxShadow={isActive ? 'neo.inset.sm' : 'none'}
+      _hover={{
+        bg: 'neomorphic.background',
+        boxShadow: isActive ? 'neo.inset.sm' : 'neo.sm'
+      }}
       onClick={onClick}
     >
       <Icon as={icon} />
@@ -95,6 +101,17 @@ export default function SettingsPage() {
   const toast = useAppToast()
   const [activeSection, setActiveSection] = useState('personal')
 
+  // Notification preferences local state
+  const [notifPrefs, setNotifPrefs] = useState({
+    emailNotifications: true,
+    pushNotifications: true,
+    smsNotifications: false,
+    deadlineReminders: true,
+    complianceAlerts: true,
+    grantMatches: true,
+    weeklyDigest: false,
+  })
+
   // TanStack Query - Fetch data from API
   const { data: personalInfo } = usePersonalInfo()
   const { data: organizationInfo } = useOrganizationInfo()
@@ -104,6 +121,13 @@ export default function SettingsPage() {
   const updatePersonalMutation = useUpdatePersonalInfo()
   const updateOrganizationMutation = useUpdateOrganizationInfo()
   const updateNotificationsMutation = useUpdateNotificationPreferences()
+
+  // Update notification state when data is fetched
+  useEffect(() => {
+    if (notificationPrefs) {
+      setNotifPrefs(notificationPrefs)
+    }
+  }, [notificationPrefs])
 
   // React Hook Form - Personal Info
   const personalForm = useForm<PersonalInfoFormData>({
@@ -161,13 +185,17 @@ export default function SettingsPage() {
   }
 
   const onSaveNotifications = () => {
-    // TODO: Implement notification preferences save
-    toast.success('Preferences saved', 'Your notification preferences have been updated')
+    updateNotificationsMutation.mutate(notifPrefs)
+  }
+
+  const handleNotifToggle = (key: keyof typeof notifPrefs) => {
+    setNotifPrefs(prev => ({ ...prev, [key]: !prev[key] }))
   }
 
   return (
     <MainLayout>
-      <Container maxW="container.xl" py={8}>
+      <Box minH="100vh" bg="neomorphic.background">
+        <Container maxW="container.xl" py={8}>
         <Box mb={8}>
           <Heading size="lg" mb={2} color="purple.900">
             Profile Management
@@ -183,29 +211,33 @@ export default function SettingsPage() {
             w={{ base: 'full', lg: '280px' }}
             h="fit-content"
             flexShrink={0}
+            bg="neomorphic.surface"
+            borderRadius="3xl"
+            boxShadow="neo.md"
+            border="none"
           >
             <Card.Body p={4}>
               <VStack gap={2} align="stretch">
                 <SectionTab
-                  icon={MdPerson}
+                  icon={FiUser}
                   label="Personal Information"
                   isActive={activeSection === 'personal'}
                   onClick={() => setActiveSection('personal')}
                 />
                 <SectionTab
-                  icon={MdBusiness}
+                  icon={FiBriefcase}
                   label="Organization Details"
                   isActive={activeSection === 'organization'}
                   onClick={() => setActiveSection('organization')}
                 />
                 <SectionTab
-                  icon={MdNotifications}
+                  icon={FiBell}
                   label="Notification Preferences"
                   isActive={activeSection === 'notifications'}
                   onClick={() => setActiveSection('notifications')}
                 />
                 <SectionTab
-                  icon={MdSecurity}
+                  icon={FiShield}
                   label="Security Settings"
                   isActive={activeSection === 'security'}
                   onClick={() => setActiveSection('security')}
@@ -215,7 +247,7 @@ export default function SettingsPage() {
           </Card.Root>
 
           {/* Main Content Area */}
-          <Card.Root flex={1}>
+          <Card.Root flex={1} bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
             <Card.Body p={8}>
               {activeSection === 'personal' && (
                 <Box as="form" onSubmit={personalForm.handleSubmit(onSavePersonal)}>
@@ -233,8 +265,19 @@ export default function SettingsPage() {
                         {personalInfo?.firstName?.[0]}{personalInfo?.lastName?.[0]}
                       </Avatar.Fallback>
                     </Avatar.Root>
-                    <Button variant="outline" size="sm" type="button">
-                      <Icon as={MdCamera} />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      type="button"
+                      color="purple.900"
+                      bg="neomorphic.background"
+                      border="none"
+                      borderRadius="2xl"
+                      boxShadow="neo.sm"
+                      _hover={{ boxShadow: "neo.md", transform: "translateY(-2px)", color: "purple.700" }}
+                      _active={{ boxShadow: "neo.inset.sm", transform: "translateY(0)" }}
+                    >
+                      <Icon as={FiCamera} />
                       Change Photo
                     </Button>
                   </Flex>
@@ -369,14 +412,29 @@ export default function SettingsPage() {
 
                     {/* Action Buttons */}
                     <Flex justify="flex-end" gap={4} pt={4}>
-                      <Button variant="outline" type="button">
+                      <Button
+                        variant="outline"
+                        type="button"
+                        color="purple.900"
+                        bg="neomorphic.background"
+                        border="none"
+                        borderRadius="2xl"
+                        boxShadow="neo.sm"
+                        _hover={{ boxShadow: "neo.md", transform: "translateY(-2px)", color: "purple.700" }}
+                        _active={{ boxShadow: "neo.inset.sm", transform: "translateY(0)" }}
+                      >
                         Cancel
                       </Button>
                       <Button
                         type="submit"
                         colorPalette="purple"
+                        color="white"
                         loading={updatePersonalMutation.isPending}
                         disabled={updatePersonalMutation.isPending}
+                        borderRadius="2xl"
+                        boxShadow="neo.md"
+                        _hover={{ boxShadow: "neo.lg", transform: "translateY(-2px)" }}
+                        _active={{ transform: "scale(0.98)", boxShadow: "neo.sm" }}
                       >
                         {updatePersonalMutation.isPending ? 'Saving...' : 'Save Changes'}
                       </Button>
@@ -475,8 +533,28 @@ export default function SettingsPage() {
                     <Separator my={2} />
 
                     <Flex justify="flex-end" gap={4} pt={4}>
-                      <Button variant="outline">Cancel</Button>
-                      <Button colorPalette="purple">Save Changes</Button>
+                      <Button
+                        variant="outline"
+                        color="purple.900"
+                        bg="neomorphic.background"
+                        border="none"
+                        borderRadius="2xl"
+                        boxShadow="neo.sm"
+                        _hover={{ boxShadow: "neo.md", transform: "translateY(-2px)", color: "purple.700" }}
+                        _active={{ boxShadow: "neo.inset.sm", transform: "translateY(0)" }}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        colorPalette="purple"
+                        color="white"
+                        borderRadius="2xl"
+                        boxShadow="neo.md"
+                        _hover={{ boxShadow: "neo.lg", transform: "translateY(-2px)" }}
+                        _active={{ transform: "scale(0.98)", boxShadow: "neo.sm" }}
+                      >
+                        Save Changes
+                      </Button>
                     </Flex>
                   </VStack>
                 </Box>
@@ -495,34 +573,34 @@ export default function SettingsPage() {
                     <Box>
                       <Heading size="sm" mb={4} color="purple.900">Notification Channels</Heading>
                       <VStack gap={4} align="stretch">
-                        <HStack justify="space-between" p={4} border="1px" borderColor="gray.200" borderRadius="md">
+                        <HStack justify="space-between" p={4} bg="neomorphic.background" border="none" borderRadius="2xl" boxShadow="neo.inset.sm">
                           <Box>
                             <Text fontWeight="medium" color="purple.900">Email Notifications</Text>
                             <Text fontSize="sm" color="purple.800">Receive updates via email</Text>
                           </Box>
-                          <Checkbox.Root defaultChecked size="lg">
+                          <Checkbox.Root checked={notifPrefs.emailNotifications} onCheckedChange={() => handleNotifToggle('emailNotifications')} size="lg">
                             <Checkbox.HiddenInput />
                             <Checkbox.Control />
                           </Checkbox.Root>
                         </HStack>
 
-                        <HStack justify="space-between" p={4} border="1px" borderColor="gray.200" borderRadius="md">
+                        <HStack justify="space-between" p={4} bg="neomorphic.background" border="none" borderRadius="2xl" boxShadow="neo.inset.sm">
                           <Box>
                             <Text fontWeight="medium" color="purple.900">Push Notifications</Text>
                             <Text fontSize="sm" color="purple.800">Get browser push notifications</Text>
                           </Box>
-                          <Checkbox.Root defaultChecked size="lg">
+                          <Checkbox.Root checked={notifPrefs.pushNotifications} onCheckedChange={() => handleNotifToggle('pushNotifications')} size="lg">
                             <Checkbox.HiddenInput />
                             <Checkbox.Control />
                           </Checkbox.Root>
                         </HStack>
 
-                        <HStack justify="space-between" p={4} border="1px" borderColor="gray.200" borderRadius="md">
+                        <HStack justify="space-between" p={4} bg="neomorphic.background" border="none" borderRadius="2xl" boxShadow="neo.inset.sm">
                           <Box>
                             <Text fontWeight="medium" color="purple.900">SMS Notifications</Text>
                             <Text fontSize="sm" color="purple.800">Receive text message alerts</Text>
                           </Box>
-                          <Checkbox.Root size="lg">
+                          <Checkbox.Root checked={notifPrefs.smsNotifications} onCheckedChange={() => handleNotifToggle('smsNotifications')} size="lg">
                             <Checkbox.HiddenInput />
                             <Checkbox.Control />
                           </Checkbox.Root>
@@ -535,45 +613,45 @@ export default function SettingsPage() {
                     <Box>
                       <Heading size="sm" mb={4} color="purple.900">Alert Types</Heading>
                       <VStack gap={4} align="stretch">
-                        <HStack justify="space-between" p={4} border="1px" borderColor="gray.200" borderRadius="md">
+                        <HStack justify="space-between" p={4} bg="neomorphic.background" border="none" borderRadius="2xl" boxShadow="neo.inset.sm">
                           <Box>
                             <Text fontWeight="medium" color="purple.900">Deadline Reminders</Text>
                             <Text fontSize="sm" color="purple.800">Get notified about upcoming deadlines</Text>
                           </Box>
-                          <Checkbox.Root defaultChecked size="lg">
+                          <Checkbox.Root checked={notifPrefs.deadlineReminders} onCheckedChange={() => handleNotifToggle('deadlineReminders')} size="lg">
                             <Checkbox.HiddenInput />
                             <Checkbox.Control />
                           </Checkbox.Root>
                         </HStack>
 
-                        <HStack justify="space-between" p={4} border="1px" borderColor="gray.200" borderRadius="md">
+                        <HStack justify="space-between" p={4} bg="neomorphic.background" border="none" borderRadius="2xl" boxShadow="neo.inset.sm">
                           <Box>
                             <Text fontWeight="medium" color="purple.900">Compliance Alerts</Text>
                             <Text fontSize="sm" color="purple.800">Alerts for compliance requirements</Text>
                           </Box>
-                          <Checkbox.Root defaultChecked size="lg">
+                          <Checkbox.Root checked={notifPrefs.complianceAlerts} onCheckedChange={() => handleNotifToggle('complianceAlerts')} size="lg">
                             <Checkbox.HiddenInput />
                             <Checkbox.Control />
                           </Checkbox.Root>
                         </HStack>
 
-                        <HStack justify="space-between" p={4} border="1px" borderColor="gray.200" borderRadius="md">
+                        <HStack justify="space-between" p={4} bg="neomorphic.background" border="none" borderRadius="2xl" boxShadow="neo.inset.sm">
                           <Box>
                             <Text fontWeight="medium" color="purple.900">New Grant Matches</Text>
                             <Text fontSize="sm" color="purple.800">Alerts when new grants match your profile</Text>
                           </Box>
-                          <Checkbox.Root defaultChecked size="lg">
+                          <Checkbox.Root checked={notifPrefs.grantMatches} onCheckedChange={() => handleNotifToggle('grantMatches')} size="lg">
                             <Checkbox.HiddenInput />
                             <Checkbox.Control />
                           </Checkbox.Root>
                         </HStack>
 
-                        <HStack justify="space-between" p={4} border="1px" borderColor="gray.200" borderRadius="md">
+                        <HStack justify="space-between" p={4} bg="neomorphic.background" border="none" borderRadius="2xl" boxShadow="neo.inset.sm">
                           <Box>
                             <Text fontWeight="medium" color="purple.900">Weekly Activity Digest</Text>
                             <Text fontSize="sm" color="purple.800">Summary of weekly activities</Text>
                           </Box>
-                          <Checkbox.Root size="lg">
+                          <Checkbox.Root checked={notifPrefs.weeklyDigest} onCheckedChange={() => handleNotifToggle('weeklyDigest')} size="lg">
                             <Checkbox.HiddenInput />
                             <Checkbox.Control />
                           </Checkbox.Root>
@@ -584,12 +662,31 @@ export default function SettingsPage() {
                     <Separator my={2} />
 
                     <Flex justify="flex-end" gap={4} pt={4}>
-                      <Button variant="outline" type="button">Reset to Default</Button>
+                      <Button
+                        variant="outline"
+                        type="button"
+                        color="purple.900"
+                        bg="neomorphic.background"
+                        border="none"
+                        borderRadius="2xl"
+                        boxShadow="neo.sm"
+                        _hover={{ boxShadow: "neo.md", transform: "translateY(-2px)", color: "purple.700" }}
+                        _active={{ boxShadow: "neo.inset.sm", transform: "translateY(0)" }}
+                      >
+                        Reset to Default
+                      </Button>
                       <Button
                         colorPalette="purple"
+                        color="white"
                         onClick={onSaveNotifications}
+                        loading={updateNotificationsMutation.isPending}
+                        disabled={updateNotificationsMutation.isPending}
+                        borderRadius="2xl"
+                        boxShadow="neo.md"
+                        _hover={{ boxShadow: "neo.lg", transform: "translateY(-2px)" }}
+                        _active={{ transform: "scale(0.98)", boxShadow: "neo.sm" }}
                       >
-                        Save Preferences
+                        {updateNotificationsMutation.isPending ? 'Saving...' : 'Save Preferences'}
                       </Button>
                     </Flex>
                   </VStack>
@@ -639,7 +736,15 @@ export default function SettingsPage() {
                           />
                         </Field.Root>
 
-                        <Button colorPalette="purple" alignSelf="flex-start">
+                        <Button
+                          colorPalette="purple"
+                          color="white"
+                          alignSelf="flex-start"
+                          borderRadius="2xl"
+                          boxShadow="neo.md"
+                          _hover={{ boxShadow: "neo.lg", transform: "translateY(-2px)" }}
+                          _active={{ transform: "scale(0.98)", boxShadow: "neo.sm" }}
+                        >
                           Update Password
                         </Button>
                       </VStack>
@@ -649,7 +754,7 @@ export default function SettingsPage() {
 
                     <Box>
                       <Heading size="sm" mb={4} color="purple.900">Two-Factor Authentication</Heading>
-                      <Card.Root variant="outline" borderColor="purple.200">
+                      <Card.Root bg="neomorphic.background" borderRadius="2xl" boxShadow="neo.inset.sm" border="none">
                         <Card.Body>
                           <HStack justify="space-between">
                             <Box>
@@ -672,7 +777,7 @@ export default function SettingsPage() {
                     <Box>
                       <Heading size="sm" mb={4} color="purple.900">Active Sessions</Heading>
                       <VStack gap={3} align="stretch">
-                        <Card.Root variant="outline">
+                        <Card.Root bg="neomorphic.background" borderRadius="2xl" boxShadow="neo.inset.sm" border="none">
                           <Card.Body>
                             <HStack justify="space-between">
                               <Box>
@@ -686,7 +791,7 @@ export default function SettingsPage() {
                           </Card.Body>
                         </Card.Root>
 
-                        <Card.Root variant="outline">
+                        <Card.Root bg="neomorphic.background" borderRadius="2xl" boxShadow="neo.inset.sm" border="none">
                           <Card.Body>
                             <HStack justify="space-between">
                               <Box>
@@ -695,7 +800,17 @@ export default function SettingsPage() {
                                   Last active: 2 hours ago
                                 </Text>
                               </Box>
-                              <Button size="sm" variant="outline" colorPalette="red">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                colorPalette="red"
+                                bg="neomorphic.background"
+                                border="none"
+                                borderRadius="2xl"
+                                boxShadow="neo.sm"
+                                _hover={{ boxShadow: "neo.md", transform: "translateY(-2px)" }}
+                                _active={{ boxShadow: "neo.inset.sm", transform: "translateY(0)" }}
+                              >
                                 Revoke
                               </Button>
                             </HStack>
@@ -708,7 +823,7 @@ export default function SettingsPage() {
 
                     <Box>
                       <Heading size="sm" mb={4} color="red.800">Danger Zone</Heading>
-                      <Card.Root variant="outline" borderColor="red.200" bg="red.50">
+                      <Card.Root borderRadius="2xl" boxShadow="neo.sm" border="1px solid" borderColor="red.200" bg="red.50">
                         <Card.Body>
                           <VStack align="stretch" gap={3}>
                             <Box>
@@ -719,7 +834,16 @@ export default function SettingsPage() {
                                 Once you delete your account, there is no going back. Please be certain.
                               </Text>
                             </Box>
-                            <Button size="sm" colorPalette="red" variant="outline" alignSelf="flex-start">
+                            <Button
+                              size="sm"
+                              colorPalette="red"
+                              variant="outline"
+                              alignSelf="flex-start"
+                              borderRadius="2xl"
+                              boxShadow="neo.sm"
+                              _hover={{ boxShadow: "neo.md", transform: "translateY(-2px)" }}
+                              _active={{ boxShadow: "neo.inset.sm", transform: "translateY(0)" }}
+                            >
                               Delete Account
                             </Button>
                           </VStack>
@@ -733,6 +857,7 @@ export default function SettingsPage() {
           </Card.Root>
         </Flex>
       </Container>
+      </Box>
     </MainLayout>
   )
 }

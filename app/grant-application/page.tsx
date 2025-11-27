@@ -249,7 +249,7 @@ function GrantGenieContent() {
 
   return (
     <MainLayout>
-      <Box minH="100vh" bg="bg.subtle">
+      <Box minH="100vh" bg="neomorphic.background">
         <Container maxW="container.xl" py={padding.page}>
           <VStack gap={gaps.loose} align="stretch">
             {/* Breadcrumb */}
@@ -278,7 +278,7 @@ function GrantGenieContent() {
               {/* Left Column - Upload & Teaching */}
               <VStack gap={gaps.relaxed} align="stretch">
                 {/* Upload Grant Materials */}
-                <Card.Root>
+                <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
                   <Card.Header>
                     <Heading size="md" color="purple.900">
                       Upload Grant Materials
@@ -300,14 +300,14 @@ function GrantGenieContent() {
                       />
                       <Box
                         p={8}
-                        border="2px dashed"
-                        borderColor={isDraggingRfp ? 'purple.500' : errors.rfpFiles ? 'red.400' : 'purple.300'}
-                        borderRadius="lg"
-                        bg={isDraggingRfp ? 'purple.100' : 'purple.50'}
+                        border="none"
+                        borderRadius="2xl"
+                        bg="neomorphic.background"
                         cursor="pointer"
                         textAlign="center"
-                        _hover={{ borderColor: 'purple.400', bg: 'purple.100' }}
-                        transition="all 0.2s"
+                        boxShadow={isDraggingRfp ? 'neo.lg' : 'neo.inset.md'}
+                        _hover={{ boxShadow: 'neo.lg' }}
+                        transition="all 0.3s"
                         onClick={() => rfpInputRef.current?.click()}
                         onDragOver={(e) => handleDragOver(e, 'rfp')}
                         onDragLeave={(e) => handleDragLeave(e, 'rfp')}
@@ -339,10 +339,10 @@ function GrantGenieContent() {
                             <HStack
                               key={uploadedFile.id}
                               p={3}
-                              bg="white"
-                              borderRadius="md"
-                              border="1px solid"
-                              borderColor="purple.200"
+                              bg="neomorphic.background"
+                              borderRadius="xl"
+                              border="none"
+                              boxShadow="neo.sm"
                               justify="space-between"
                             >
                               <HStack gap={gaps.tight}>
@@ -384,6 +384,11 @@ function GrantGenieContent() {
                           rows={6}
                           value={formData.rfpText}
                           onChange={(e) => setFormData({ rfpText: e.target.value })}
+                          bg="neomorphic.background"
+                          border="none"
+                          borderRadius="2xl"
+                          boxShadow="neo.inset.sm"
+                          _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
                         />
                         <Field.HelperText>
                           Paste the content or describe in text box
@@ -394,7 +399,7 @@ function GrantGenieContent() {
                 </Card.Root>
 
                 {/* Teach the Grant Genie */}
-                <Card.Root>
+                <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
                   <Card.Header>
                     <Heading size="md" color="purple.900">
                       Teach the Grant Genie
@@ -416,14 +421,14 @@ function GrantGenieContent() {
                       />
                       <Box
                         p={8}
-                        border="2px dashed"
-                        borderColor={isDraggingTeaching ? 'purple.500' : errors.teachingFiles ? 'red.400' : 'purple.300'}
-                        borderRadius="lg"
-                        bg={isDraggingTeaching ? 'purple.100' : 'white'}
+                        border="none"
+                        borderRadius="2xl"
+                        bg="neomorphic.background"
                         cursor="pointer"
                         textAlign="center"
-                        _hover={{ borderColor: 'purple.400', bg: 'purple.50' }}
-                        transition="all 0.2s"
+                        boxShadow={isDraggingTeaching ? 'neo.lg' : 'neo.inset.md'}
+                        _hover={{ boxShadow: 'neo.lg' }}
+                        transition="all 0.3s"
                         onClick={() => teachingInputRef.current?.click()}
                         onDragOver={(e) => handleDragOver(e, 'teaching')}
                         onDragLeave={(e) => handleDragLeave(e, 'teaching')}
@@ -455,10 +460,10 @@ function GrantGenieContent() {
                             <HStack
                               key={uploadedFile.id}
                               p={3}
-                              bg="white"
-                              borderRadius="md"
-                              border="1px solid"
-                              borderColor="purple.200"
+                              bg="neomorphic.background"
+                              borderRadius="xl"
+                              border="none"
+                              boxShadow="neo.sm"
                               justify="space-between"
                             >
                               <HStack gap={gaps.tight}>
@@ -500,6 +505,11 @@ function GrantGenieContent() {
                           rows={6}
                           value={formData.teachingMaterials}
                           onChange={(e) => setFormData({ teachingMaterials: e.target.value })}
+                          bg="neomorphic.background"
+                          border="none"
+                          borderRadius="2xl"
+                          boxShadow="neo.inset.sm"
+                          _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
                         />
                         <Field.HelperText>
                           Paste here or upload files above
@@ -510,7 +520,7 @@ function GrantGenieContent() {
                 </Card.Root>
 
                 {/* Knowledge Capture */}
-                <Card.Root bg="purple.50" border="1px solid" borderColor="purple.200">
+                <Card.Root bg="neomorphic.surface" border="none" borderRadius="3xl" boxShadow="neo.inset.sm">
                   <Card.Header>
                     <Heading size="sm" color="purple.900">
                       Knowledge Capture
@@ -524,7 +534,7 @@ function GrantGenieContent() {
                 </Card.Root>
 
                 {/* Talk to the Genie */}
-                <Card.Root bg="purple.50" border="1px solid" borderColor="purple.200">
+                <Card.Root bg="neomorphic.surface" border="none" borderRadius="3xl" boxShadow="neo.inset.sm">
                   <Card.Header>
                     <Heading size="sm" color="purple.900">
                       Talk to the Genie
@@ -549,6 +559,11 @@ function GrantGenieContent() {
                       <Textarea
                         placeholder="Remember that Smith Foundation prefers concise strategic metrics over general statements..."
                         rows={3}
+                        bg="neomorphic.background"
+                        border="none"
+                        borderRadius="2xl"
+                        boxShadow="neo.inset.sm"
+                        _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
                       />
                     </VStack>
                   </Card.Body>
@@ -557,7 +572,7 @@ function GrantGenieContent() {
 
               {/* Right Column - Project Context */}
               <VStack gap={gaps.relaxed} align="stretch">
-                <Card.Root>
+                <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
                   <Card.Header>
                     <Heading size="md" color="purple.900">
                       Project Context Fields
@@ -578,6 +593,11 @@ function GrantGenieContent() {
                           value={formData.projectName || ''}
                           onChange={(e) => handleFieldChange('projectName', e.target.value)}
                           aria-invalid={!!errors.projectName}
+                          bg="neomorphic.background"
+                          border="none"
+                          borderRadius="2xl"
+                          boxShadow="neo.inset.sm"
+                          _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
                         />
                         <Field.ErrorText>{errors.projectName}</Field.ErrorText>
                       </Field.Root>
@@ -592,6 +612,11 @@ function GrantGenieContent() {
                           value={formData.funderName || ''}
                           onChange={(e) => handleFieldChange('funderName', e.target.value)}
                           aria-invalid={!!errors.funderName}
+                          bg="neomorphic.background"
+                          border="none"
+                          borderRadius="2xl"
+                          boxShadow="neo.inset.sm"
+                          _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
                         />
                         <Field.ErrorText>{errors.funderName}</Field.ErrorText>
                       </Field.Root>
@@ -605,6 +630,11 @@ function GrantGenieContent() {
                           type="date"
                           value={formData.deadline || ''}
                           onChange={(e) => handleFieldChange('deadline', e.target.value)}
+                          bg="neomorphic.background"
+                          border="none"
+                          borderRadius="2xl"
+                          boxShadow="neo.inset.sm"
+                          _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
                         />
                         <Field.HelperText>
                           Select the deadline for this grant application
@@ -620,6 +650,11 @@ function GrantGenieContent() {
                           placeholder="$50,000"
                           value={formData.fundingAmount || ''}
                           onChange={(e) => handleFieldChange('fundingAmount', e.target.value)}
+                          bg="neomorphic.background"
+                          border="none"
+                          borderRadius="2xl"
+                          boxShadow="neo.inset.sm"
+                          _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
                         />
                         <Field.HelperText>
                           Enter the amount you're requesting (optional)
@@ -630,7 +665,7 @@ function GrantGenieContent() {
                 </Card.Root>
 
                 {/* Input Summary Preview */}
-                <Card.Root bg="purple.50" border="1px solid" borderColor="purple.200">
+                <Card.Root bg="neomorphic.surface" border="none" borderRadius="3xl" boxShadow="neo.inset.sm">
                   <Card.Header>
                     <Heading size="sm" color="purple.900">
                       Input Summary
@@ -686,7 +721,7 @@ function GrantGenieContent() {
 
             {/* Error Message */}
             {errors.submit && (
-              <Card.Root bg="red.50" border="1px solid" borderColor="red.300">
+              <Card.Root bg="red.50" border="none" borderRadius="3xl" boxShadow="neo.sm">
                 <Card.Body>
                   <HStack gap={gaps.tight}>
                     <Icon as={FiAlertCircle} color="red.700" />
@@ -703,16 +738,20 @@ function GrantGenieContent() {
               <Button
                 size="lg"
                 colorPalette="purple"
+                color="white"
                 px={12}
                 onClick={handleGenerate}
                 disabled={isCreating || !isFormValid()}
                 opacity={!isFormValid() && !isCreating ? 0.6 : 1}
                 cursor={!isFormValid() && !isCreating ? 'not-allowed' : 'pointer'}
-                _active={{ transform: 'scale(0.98)' }}
+                borderRadius="2xl"
+                boxShadow="neo.md"
+                _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                _active={{ transform: 'scale(0.98)', boxShadow: 'neo.sm' }}
                 _disabled={{
                   opacity: 0.6,
                   cursor: 'not-allowed',
-                  _hover: { bg: undefined }
+                  _hover: { bg: undefined, transform: 'none', boxShadow: 'neo.md' }
                 }}
               >
                 {isCreating ? (
@@ -750,7 +789,7 @@ export default function GrantGeniePage() {
     <Suspense fallback={
       <Box
         minH="100vh"
-        bg="purple.50"
+        bg="neomorphic.background"
         display="flex"
         alignItems="center"
         justifyContent="center"

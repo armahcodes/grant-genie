@@ -102,7 +102,7 @@ export default function ResourcesPage() {
           </Box>
 
           {/* AI Grant Copilot */}
-          <Card.Root>
+          <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
             <Card.Header>
               <HStack>
                 <Icon as={FiFileText} boxSize={6} color="purple.600" />
@@ -163,13 +163,23 @@ export default function ResourcesPage() {
                         handleSendMessage()
                       }
                     }}
+                    bg="neomorphic.background"
+                    border="none"
+                    borderRadius="2xl"
+                    boxShadow="neo.inset.sm"
+                    color="purple.900"
+                    _placeholder={{ color: 'purple.400' }}
+                    _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
                   />
                   <IconButton
                     aria-label="Send message to AI assistant"
                     size="sm"
                     colorPalette="purple"
                     onClick={handleSendMessage}
-                    _active={{ transform: 'scale(0.95)' }}
+                    borderRadius="2xl"
+                    boxShadow="neo.md"
+                    _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                    _active={{ transform: 'scale(0.95)', boxShadow: 'neo.sm' }}
                     _focusVisible={{
                       outline: '3px solid',
                       outlineColor: 'purple.500',
@@ -186,7 +196,7 @@ export default function ResourcesPage() {
           {/* Resources Grid */}
           <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
             {/* Application Templates */}
-            <Card.Root>
+            <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
               <Card.Header>
                 <HStack>
                   <Icon as={FiFileText} boxSize={5} color="purple.600" />
@@ -203,11 +213,13 @@ export default function ResourcesPage() {
                       key={index}
                       justify="space-between"
                       p={3}
-                      border="1px"
-                      borderColor={borderColor}
-                      borderRadius="md"
-                      _hover={{ bg: 'purple.50' }}
+                      bg="neomorphic.background"
+                      border="none"
+                      borderRadius="2xl"
+                      boxShadow="neo.sm"
+                      _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
                       cursor="pointer"
+                      transition="all 0.3s"
                     >
                       <Text fontSize="sm" color="purple.900">{template.name}</Text>
                       <Icon as={template.icon} color="purple.600" />
@@ -218,7 +230,7 @@ export default function ResourcesPage() {
             </Card.Root>
 
             {/* Best Practice Guides */}
-            <Card.Root>
+            <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
               <Card.Header>
                 <HStack>
                   <Icon as={FiFileText} boxSize={5} color="purple.600" />
@@ -235,14 +247,16 @@ export default function ResourcesPage() {
                       key={index}
                       justify="space-between"
                       p={3}
-                      border="1px"
-                      borderColor={borderColor}
-                      borderRadius="md"
-                      _hover={{ bg: 'gray.50' }}
+                      bg="neomorphic.background"
+                      border="none"
+                      borderRadius="2xl"
+                      boxShadow="neo.sm"
+                      _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
                       cursor="pointer"
+                      transition="all 0.3s"
                     >
-                      <Text fontSize="sm">{guide.name}</Text>
-                      <Icon as={guide.icon} color="gray.500" />
+                      <Text fontSize="sm" color="purple.900">{guide.name}</Text>
+                      <Icon as={guide.icon} color="purple.600" />
                     </HStack>
                   ))}
                 </VStack>
@@ -250,7 +264,7 @@ export default function ResourcesPage() {
             </Card.Root>
 
             {/* Management Tools */}
-            <Card.Root>
+            <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
               <Card.Header>
                 <HStack>
                   <Icon as={FiFileText} boxSize={5} color="purple.600" />
@@ -267,14 +281,16 @@ export default function ResourcesPage() {
                       key={index}
                       justify="space-between"
                       p={3}
-                      border="1px"
-                      borderColor={borderColor}
-                      borderRadius="md"
-                      _hover={{ bg: 'gray.50' }}
+                      bg="neomorphic.background"
+                      border="none"
+                      borderRadius="2xl"
+                      boxShadow="neo.sm"
+                      _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
                       cursor="pointer"
+                      transition="all 0.3s"
                     >
-                      <Text fontSize="sm">{tool.name}</Text>
-                      <Icon as={tool.icon} color="gray.500" />
+                      <Text fontSize="sm" color="purple.900">{tool.name}</Text>
+                      <Icon as={tool.icon} color="purple.600" />
                     </HStack>
                   ))}
                 </VStack>
@@ -283,7 +299,7 @@ export default function ResourcesPage() {
           </SimpleGrid>
 
           {/* Quick Actions */}
-          <Card.Root>
+          <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
             <Card.Header>
               <Heading size="md" color="purple.900">Quick Actions</Heading>
             </Card.Header>
@@ -294,9 +310,16 @@ export default function ResourcesPage() {
                     key={index}
                     variant="outline"
                     colorPalette="purple"
+                    color="purple.900"
                     h="100px"
                     flexDirection="column"
                     gap={2}
+                    bg="neomorphic.background"
+                    border="none"
+                    borderRadius="2xl"
+                    boxShadow="neo.sm"
+                    _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                    _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
                   >
                     <Icon as={action.icon} boxSize={8} />
                     <Text fontSize="sm">{action.name}</Text>
@@ -312,7 +335,13 @@ export default function ResourcesPage() {
               aria-label="Go to previous page of resources"
               variant="outline"
               size="sm"
-              _active={{ transform: 'scale(0.95)' }}
+              color="purple.900"
+              bg="neomorphic.background"
+              border="none"
+              borderRadius="2xl"
+              boxShadow="neo.sm"
+              _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+              _active={{ transform: 'scale(0.95)', boxShadow: 'neo.inset.sm' }}
               _focusVisible={{
                 outline: '3px solid',
                 outlineColor: 'purple.500',
@@ -328,7 +357,13 @@ export default function ResourcesPage() {
               aria-label="Go to next page of resources"
               variant="outline"
               size="sm"
-              _active={{ transform: 'scale(0.95)' }}
+              color="purple.900"
+              bg="neomorphic.background"
+              border="none"
+              borderRadius="2xl"
+              boxShadow="neo.sm"
+              _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+              _active={{ transform: 'scale(0.95)', boxShadow: 'neo.inset.sm' }}
               _focusVisible={{
                 outline: '3px solid',
                 outlineColor: 'purple.500',

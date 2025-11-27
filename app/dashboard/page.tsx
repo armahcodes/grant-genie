@@ -264,7 +264,7 @@ export default function DashboardPage() {
         </Container>
       </Box>
 
-      <Container maxW="container.xl" py={8}>
+      <Container maxW="container.xl" py={8} bg="neomorphic.background" borderRadius="3xl">
         {/* Premium Stats Grid */}
         {isLoading ? (
           <Box mt={{ base: 0, md: -12 }} mb={8}>
@@ -274,23 +274,26 @@ export default function DashboardPage() {
         <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} gap={6} mb={8} mt={{ base: 0, md: -12 }} position="relative" zIndex={2}>
           {/* Active Grants Card */}
           <Card.Root
-            bg="white"
+            bg="neomorphic.surface"
             cursor="pointer"
             tabIndex={0}
             role="button"
             aria-label="View active grants and applications"
-            border="1px solid"
-            borderColor="purple.100"
+            border="none"
+            boxShadow="neo.md"
             _hover={{
               transform: 'translateY(-8px)',
-              boxShadow: `0 20px 40px ${softTeal}20`,
-              borderColor: softTeal,
+              boxShadow: 'neo.lg',
             }}
             _focusVisible={{
               outline: '3px solid',
               outlineColor: 'purple.500',
               outlineOffset: '2px',
               transform: 'translateY(-8px)'
+            }}
+            _active={{
+              boxShadow: 'neo.sm',
+              transform: 'translateY(-2px)',
             }}
             transition="all 0.4s cubic-bezier(0.4, 0, 0.2, 1)"
             onClick={() => router.push('/grant-application')}
@@ -300,7 +303,7 @@ export default function DashboardPage() {
                 router.push('/grant-application')
               }
             }}
-            borderRadius="2xl"
+            borderRadius="3xl"
             overflow="hidden"
             position="relative"
           >
@@ -432,23 +435,26 @@ export default function DashboardPage() {
 
           {/* Upcoming Deadlines Card */}
           <Card.Root
-            bg="white"
+            bg="neomorphic.surface"
             cursor="pointer"
             tabIndex={0}
             role="button"
             aria-label="View upcoming compliance deadlines"
-            border="2px solid"
-            borderColor={(stats?.upcomingDeadlines || 0) > 5 ? 'orange.300' : 'purple.100'}
+            border="none"
+            boxShadow={(stats?.upcomingDeadlines || 0) > 5 ? 'neo.lg' : 'neo.md'}
             _hover={{
               transform: 'translateY(-8px)',
-              boxShadow: '0 20px 40px rgba(251, 146, 60, 0.2)',
-              borderColor: 'orange.400',
+              boxShadow: 'neo.xl',
             }}
             _focusVisible={{
               outline: '3px solid',
               outlineColor: 'orange.500',
               outlineOffset: '2px',
               transform: 'translateY(-8px)'
+            }}
+            _active={{
+              boxShadow: 'neo.sm',
+              transform: 'translateY(-2px)',
             }}
             transition="all 0.4s cubic-bezier(0.4, 0, 0.2, 1)"
             onClick={() => router.push('/compliance-tracker')}
@@ -458,7 +464,7 @@ export default function DashboardPage() {
                 router.push('/compliance-tracker')
               }
             }}
-            borderRadius="2xl"
+            borderRadius="3xl"
             position="relative"
             overflow="hidden"
           >
@@ -585,11 +591,10 @@ export default function DashboardPage() {
         <SimpleGrid columns={{ base: 1, lg: 2 }} gap={8} mb={8}>
           {/* Recent Applications - Premium Card */}
           <Card.Root
-            bg="white"
-            border="1px solid"
-            borderColor="purple.100"
-            borderRadius="2xl"
-            boxShadow="lg"
+            bg="neomorphic.surface"
+            border="none"
+            borderRadius="3xl"
+            boxShadow="neo.md"
           >
 
             <Card.Header p={{ base: 5, md: 6 }} pb={4}>
@@ -631,24 +636,24 @@ export default function DashboardPage() {
                   <Box
                     key={app.id}
                     p={{ base: 4, md: 5 }}
-                    bg="purple.50"
-                    border="1px"
-                    borderColor="purple.100"
-                    borderRadius="xl"
+                    bg="neomorphic.background"
+                    border="none"
+                    borderRadius="2xl"
                     tabIndex={0}
                     role="button"
                     aria-label={`View application: ${app.grantTitle}, status: ${app.status}`}
+                    boxShadow="neo.sm"
                     _hover={{
-                      bg: `${softTeal}05`,
-                      borderColor: softTeal,
                       transform: 'translateX(6px)',
-                      boxShadow: `0 4px 15px ${softTeal}20`,
+                      boxShadow: 'neo.md',
                     }}
                     _focusVisible={{
                       outline: '3px solid',
                       outlineColor: 'purple.500',
                       outlineOffset: '2px',
-                      bg: `${softTeal}05`
+                    }}
+                    _active={{
+                      boxShadow: 'neo.inset.sm',
                     }}
                     transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
                     cursor="pointer"
@@ -716,11 +721,10 @@ export default function DashboardPage() {
 
           {/* Upcoming Deadlines - Premium Card */}
           <Card.Root
-            bg="white"
-            border="1px solid"
-            borderColor="purple.100"
-            borderRadius="2xl"
-            boxShadow="lg"
+            bg="neomorphic.surface"
+            border="none"
+            borderRadius="3xl"
+            boxShadow="neo.md"
           >
 
             <Card.Header p={{ base: 5, md: 6 }} pb={4}>
@@ -762,24 +766,26 @@ export default function DashboardPage() {
                   <Box
                     key={item.id}
                     p={{ base: 4, md: 5 }}
-                    bg={item.status === 'Overdue' ? 'red.50' : 'purple.50'}
-                    border="2px solid"
-                    borderColor={item.status === 'Overdue' ? 'red.300' : 'purple.100'}
-                    borderRadius="xl"
+                    bg={item.status === 'Overdue' ? 'red.50' : 'neomorphic.background'}
+                    border="none"
+                    borderRadius="2xl"
                     position="relative"
                     tabIndex={0}
                     role="button"
                     aria-label={`${item.status === 'Overdue' ? 'Overdue task' : 'Upcoming task'}: ${item.requirement} for ${item.grantName}, due ${formatDate(item.dueDate)}`}
+                    boxShadow={item.status === 'Overdue' ? '0 4px 15px rgba(239, 68, 68, 0.3)' : 'neo.sm'}
                     _hover={{
-                      borderColor: item.status === 'Overdue' ? 'red.400' : softTeal,
                       transform: 'translateX(6px)',
-                      boxShadow: item.status === 'Overdue' ? '0 4px 15px rgba(239, 68, 68, 0.2)' : `0 4px 15px ${softTeal}20`,
+                      boxShadow: item.status === 'Overdue' ? '0 8px 25px rgba(239, 68, 68, 0.4)' : 'neo.md',
                     }}
                     _focusVisible={{
                       outline: '3px solid',
                       outlineColor: item.status === 'Overdue' ? 'red.500' : 'purple.500',
                       outlineOffset: '2px',
                       transform: 'translateX(6px)'
+                    }}
+                    _active={{
+                      boxShadow: item.status === 'Overdue' ? '0 2px 8px rgba(239, 68, 68, 0.2)' : 'neo.inset.sm',
                     }}
                     transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
                     cursor="pointer"
@@ -864,11 +870,11 @@ export default function DashboardPage() {
         {/* Quick Actions - Premium Grid */}
         <Card.Root
           mb={8}
-          bgGradient={`linear(135deg, ${deepIndigo}05, ${softTeal}05)`}
-          border="2px solid"
-          borderColor="rgba(92, 225, 230, 0.3)"
-          borderRadius="2xl"
+          bg="neomorphic.surface"
+          border="none"
+          borderRadius="3xl"
           overflow="hidden"
+          boxShadow="neo.md"
         >
 
           <Card.Header p={{ base: 5, md: 6 }}>
@@ -892,41 +898,22 @@ export default function DashboardPage() {
                 h={{ base: '90px', md: '100px' }}
                 flexDirection="column"
                 gap={3}
-                bg="white"
-                border="2px solid"
-                borderColor="purple.200"
-                borderRadius="xl"
+                bg="neomorphic.background"
+                border="none"
+                borderRadius="2xl"
+                boxShadow="neo.sm"
                 _hover={{
-                  borderColor: softTeal,
                   transform: 'translateY(-4px) scale(1.02)',
-                  boxShadow: `0 12px 30px ${softTeal}25`,
-                  bg: 'white',
+                  boxShadow: 'neo.md',
                 }}
                 _active={{
                   transform: 'translateY(-2px) scale(0.98)',
+                  boxShadow: 'neo.inset.sm',
                 }}
                 transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
                 onClick={() => router.push('/grant-application')}
                 position="relative"
                 overflow="hidden"
-                _before={{
-                  content: '""',
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  w: '0',
-                  h: '0',
-                  borderRadius: 'full',
-                  bg: `${softTeal}10`,
-                  transform: 'translate(-50%, -50%)',
-                  transition: 'width 0.6s, height 0.6s',
-                }}
-                _focusVisible={{
-                  _before: {
-                    w: '100%',
-                    h: '100%',
-                  },
-                }}
               >
                 <Flex
                   w={{ base: 10, md: 12 }}
@@ -949,41 +936,22 @@ export default function DashboardPage() {
                 h={{ base: '90px', md: '100px' }}
                 flexDirection="column"
                 gap={3}
-                bg="white"
-                border="2px solid"
-                borderColor="purple.200"
-                borderRadius="xl"
+                bg="neomorphic.background"
+                border="none"
+                borderRadius="2xl"
+                boxShadow="neo.sm"
                 _hover={{
-                  borderColor: softTeal,
                   transform: 'translateY(-4px) scale(1.02)',
-                  boxShadow: `0 12px 30px ${softTeal}25`,
-                  bg: 'white',
+                  boxShadow: 'neo.md',
                 }}
                 _active={{
                   transform: 'translateY(-2px) scale(0.98)',
+                  boxShadow: 'neo.inset.sm',
                 }}
                 transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
                 onClick={() => router.push('/genies/donor-meeting')}
                 position="relative"
                 overflow="hidden"
-                _before={{
-                  content: '""',
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  w: '0',
-                  h: '0',
-                  borderRadius: 'full',
-                  bg: `${softTeal}10`,
-                  transform: 'translate(-50%, -50%)',
-                  transition: 'width 0.6s, height 0.6s',
-                }}
-                _focusVisible={{
-                  _before: {
-                    w: '100%',
-                    h: '100%',
-                  },
-                }}
               >
                 <Flex
                   w={{ base: 10, md: 12 }}
@@ -1006,41 +974,22 @@ export default function DashboardPage() {
                 h={{ base: '90px', md: '100px' }}
                 flexDirection="column"
                 gap={3}
-                bg="white"
-                border="2px solid"
-                borderColor="purple.200"
-                borderRadius="xl"
+                bg="neomorphic.background"
+                border="none"
+                borderRadius="2xl"
+                boxShadow="neo.sm"
                 _hover={{
-                  borderColor: 'purple.400',
                   transform: 'translateY(-4px) scale(1.02)',
-                  boxShadow: '0 12px 30px rgba(128, 90, 213, 0.25)',
-                  bg: 'white',
+                  boxShadow: 'neo.md',
                 }}
                 _active={{
                   transform: 'translateY(-2px) scale(0.98)',
+                  boxShadow: 'neo.inset.sm',
                 }}
                 transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
                 onClick={() => router.push('/genies')}
                 position="relative"
                 overflow="hidden"
-                _before={{
-                  content: '""',
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  w: '0',
-                  h: '0',
-                  borderRadius: 'full',
-                  bg: 'purple.50',
-                  transform: 'translate(-50%, -50%)',
-                  transition: 'width 0.6s, height 0.6s',
-                }}
-                _focusVisible={{
-                  _before: {
-                    w: '100%',
-                    h: '100%',
-                  },
-                }}
               >
                 <Flex
                   w={{ base: 10, md: 12 }}
@@ -1063,41 +1012,22 @@ export default function DashboardPage() {
                 h={{ base: '90px', md: '100px' }}
                 flexDirection="column"
                 gap={3}
-                bg="white"
-                border="2px solid"
-                borderColor="purple.200"
-                borderRadius="xl"
+                bg="neomorphic.background"
+                border="none"
+                borderRadius="2xl"
+                boxShadow="neo.sm"
                 _hover={{
-                  borderColor: deepIndigo,
                   transform: 'translateY(-4px) scale(1.02)',
-                  boxShadow: `0 12px 30px ${deepIndigo}25`,
-                  bg: 'white',
+                  boxShadow: 'neo.md',
                 }}
                 _active={{
                   transform: 'translateY(-2px) scale(0.98)',
+                  boxShadow: 'neo.inset.sm',
                 }}
                 transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
                 onClick={() => router.push('/genies')}
                 position="relative"
                 overflow="hidden"
-                _before={{
-                  content: '""',
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  w: '0',
-                  h: '0',
-                  borderRadius: 'full',
-                  bg: `${deepIndigo}10`,
-                  transform: 'translate(-50%, -50%)',
-                  transition: 'width 0.6s, height 0.6s',
-                }}
-                _focusVisible={{
-                  _before: {
-                    w: '100%',
-                    h: '100%',
-                  },
-                }}
               >
                 <Flex
                   w={{ base: 10, md: 12 }}
@@ -1121,11 +1051,10 @@ export default function DashboardPage() {
 
         {/* Recent Activity - Premium Timeline */}
         <Card.Root
-          bg="white"
-          border="1px solid"
-          borderColor="purple.100"
-          borderRadius="2xl"
-          boxShadow="lg"
+          bg="neomorphic.surface"
+          border="none"
+          borderRadius="3xl"
+          boxShadow="neo.md"
         >
 
           <Card.Header p={{ base: 5, md: 6 }}>

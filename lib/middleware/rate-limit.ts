@@ -1,31 +1,45 @@
 /**
  * Rate Limiting Middleware
- * 
- * Protects API routes from abuse and DoS attacks
- * Uses in-memory rate limiting for development
- * Production should use Redis-based rate limiting
+ *
+ * Protects API routes from abuse and DoS attacks.
+ * Uses in-memory rate limiting that works per-instance in serverless.
+ * Provides basic protection - entries are cleaned on each request.
  */
 
 import { NextRequest, NextResponse } from 'next/server'
 
-// In-memory rate limit store (for development)
-// Production should use Redis via @upstash/ratelimit
 interface RateLimitEntry {
   count: number
   resetAt: number
 }
 
+// In-memory rate limit store (per-instance in serverless)
 const rateLimitStore = new Map<string, RateLimitEntry>()
 
-// Cleanup old entries every 5 minutes
-setInterval(() => {
-  const now = Date.now()
-  for (const [key, entry] of rateLimitStore.entries()) {
-    if (entry.resetAt < now) {
-      rateLimitStore.delete(key)
+// Max entries to prevent memory bloat in long-running instances
+const MAX_ENTRIES = 10000
+
+/**
+ * Clean expired entries from the store
+ * Called on each request to prevent memory issues
+ */
+function cleanExpiredEntries(now: number) {
+  if (rateLimitStore.size > MAX_ENTRIES) {
+    // If we have too many entries, clear all expired ones
+    for (const [key, entry] of rateLimitStore.entries()) {
+      if (entry.resetAt < now) {
+        rateLimitStore.delete(key)
+      }
+    }
+    // If still too many, clear oldest entries
+    if (rateLimitStore.size > MAX_ENTRIES) {
+      const entries = Array.from(rateLimitStore.entries())
+      entries.sort((a, b) => a[1].resetAt - b[1].resetAt)
+      const toRemove = entries.slice(0, rateLimitStore.size - MAX_ENTRIES / 2)
+      toRemove.forEach(([key]) => rateLimitStore.delete(key))
     }
   }
-}, 5 * 60 * 1000)
+}
 
 interface RateLimitOptions {
   limit?: number // Number of requests allowed
@@ -34,7 +48,7 @@ interface RateLimitOptions {
 
 /**
  * Rate limit middleware
- * 
+ *
  * @param request - Next.js request object
  * @param options - Rate limit configuration
  * @returns Error response if rate limited, null if allowed
@@ -49,7 +63,7 @@ export async function rateLimit(
   const forwardedFor = request.headers.get('x-forwarded-for')
   const realIp = request.headers.get('x-real-ip')
   const ip = forwardedFor?.split(',')[0] || realIp || 'anonymous'
-  
+
   // Try to get user ID from auth if available
   let identifier = ip
   try {
@@ -63,6 +77,10 @@ export async function rateLimit(
   }
 
   const now = Date.now()
+
+  // Clean expired entries on each request
+  cleanExpiredEntries(now)
+
   const resetAt = now + window * 1000
   const entry = rateLimitStore.get(identifier)
 
@@ -112,4 +130,3 @@ export function createRateLimiter(options: RateLimitOptions) {
 export const strictRateLimit = createRateLimiter({ limit: 5, window: 60 }) // 5 requests per minute
 export const moderateRateLimit = createRateLimiter({ limit: 10, window: 10 }) // 10 requests per 10 seconds
 export const lenientRateLimit = createRateLimiter({ limit: 100, window: 60 }) // 100 requests per minute
-

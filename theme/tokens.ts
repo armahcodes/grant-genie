@@ -57,6 +57,15 @@ export const colors = {
     800: '#1F2937',
     900: '#111827',
   },
+
+  // Neomorphic backgrounds - soft purple-gray tones
+  neomorphic: {
+    background: '#E8E5F2',      // Main neomorphic background
+    surface: '#ECE9F5',         // Lighter surface for cards
+    subtle: '#E4E1EE',          // Subtle variation
+    darker: '#D8D4E6',          // Slightly darker for contrast
+    accent: '#F4F2F9',          // Very light accent
+  },
 } as const
 // ============================================================================
 // DARK MODE COLOR TOKENS
@@ -248,7 +257,7 @@ export const components = {
     borderColor: 'purple.100',
     bg: 'white',
   },
-  
+
   // Badge styles
   badge: {
     borderRadius: 'full',
@@ -257,13 +266,38 @@ export const components = {
     fontSize: 'sm',
     fontWeight: 'semibold',
   },
-  
+
   // Icon container
   iconContainer: {
     borderRadius: 'xl',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+
+  // Neomorphic component patterns
+  neomorphic: {
+    // Raised card/button
+    raised: {
+      borderRadius: '3xl',
+      border: 'none',
+      background: '#E8E5F2',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    },
+    // Pressed input/textarea
+    pressed: {
+      borderRadius: '2xl',
+      border: 'none',
+      background: '#E8E5F2',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    },
+    // Flat surface
+    flat: {
+      borderRadius: '2xl',
+      border: 'none',
+      background: '#ECE9F5',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    },
   },
 } as const
 
@@ -319,6 +353,37 @@ export const shadows = {
     lg: '0 8px 25px rgba(0, 0, 0, 0.2)',
     xl: '0 20px 40px rgba(0, 0, 0, 0.25)',
   },
+  // Neomorphic shadow tokens
+  neomorphic: {
+    // Extruded (raised) elements - light source from top-left
+    extruded: {
+      sm: '6px 6px 12px rgba(60, 59, 110, 0.15), -6px -6px 12px rgba(255, 255, 255, 0.7)',
+      md: '10px 10px 20px rgba(60, 59, 110, 0.15), -10px -10px 20px rgba(255, 255, 255, 0.7)',
+      lg: '15px 15px 30px rgba(60, 59, 110, 0.15), -15px -15px 30px rgba(255, 255, 255, 0.7)',
+      xl: '20px 20px 40px rgba(60, 59, 110, 0.15), -20px -20px 40px rgba(255, 255, 255, 0.7)',
+    },
+    // Pressed (inset) elements - reversed shadows
+    pressed: {
+      sm: 'inset 6px 6px 12px rgba(60, 59, 110, 0.15), inset -6px -6px 12px rgba(255, 255, 255, 0.7)',
+      md: 'inset 10px 10px 20px rgba(60, 59, 110, 0.15), inset -10px -10px 20px rgba(255, 255, 255, 0.7)',
+      lg: 'inset 15px 15px 30px rgba(60, 59, 110, 0.15), inset -15px -15px 30px rgba(255, 255, 255, 0.7)',
+      xl: 'inset 20px 20px 40px rgba(60, 59, 110, 0.15), inset -20px -20px 40px rgba(255, 255, 255, 0.7)',
+    },
+    // Flat (subtle depth) elements
+    flat: {
+      sm: '4px 4px 8px rgba(60, 59, 110, 0.1), -4px -4px 8px rgba(255, 255, 255, 0.5)',
+      md: '6px 6px 12px rgba(60, 59, 110, 0.1), -6px -6px 12px rgba(255, 255, 255, 0.5)',
+      lg: '8px 8px 16px rgba(60, 59, 110, 0.1), -8px -8px 16px rgba(255, 255, 255, 0.5)',
+      xl: '10px 10px 20px rgba(60, 59, 110, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.5)',
+    },
+    // Hoverable elements - slightly elevated
+    hover: {
+      sm: '8px 8px 16px rgba(60, 59, 110, 0.18), -8px -8px 16px rgba(255, 255, 255, 0.8)',
+      md: '12px 12px 24px rgba(60, 59, 110, 0.18), -12px -12px 24px rgba(255, 255, 255, 0.8)',
+      lg: '18px 18px 36px rgba(60, 59, 110, 0.18), -18px -18px 36px rgba(255, 255, 255, 0.8)',
+      xl: '24px 24px 48px rgba(60, 59, 110, 0.18), -24px -24px 48px rgba(255, 255, 255, 0.8)',
+    },
+  },
 } as const
 
 // ============================================================================
@@ -339,6 +404,45 @@ export const getBrandColorWithOpacity = (color: keyof typeof colors.brand, opaci
   const hexColor = colors.brand[color]
   return `${hexColor}${Math.round(opacity * 255).toString(16).padStart(2, '0')}`
 }
+
+/**
+ * Get neomorphic style object for raised elements
+ */
+export const getNeomorphicRaised = (size: 'sm' | 'md' | 'lg' | 'xl' = 'md') => ({
+  ...components.neomorphic.raised,
+  boxShadow: shadows.neomorphic.extruded[size],
+  _hover: {
+    boxShadow: shadows.neomorphic.hover[size],
+    transform: 'translateY(-2px)',
+  },
+  _active: {
+    boxShadow: shadows.neomorphic.pressed[size],
+    transform: 'translateY(0)',
+  },
+})
+
+/**
+ * Get neomorphic style object for pressed/inset elements
+ */
+export const getNeomorphicPressed = (size: 'sm' | 'md' | 'lg' | 'xl' = 'md') => ({
+  ...components.neomorphic.pressed,
+  boxShadow: shadows.neomorphic.pressed[size],
+  _focus: {
+    boxShadow: shadows.neomorphic.pressed[size],
+    outline: 'none',
+  },
+})
+
+/**
+ * Get neomorphic style object for flat elements
+ */
+export const getNeomorphicFlat = (size: 'sm' | 'md' | 'lg' | 'xl' = 'md') => ({
+  ...components.neomorphic.flat,
+  boxShadow: shadows.neomorphic.flat[size],
+  _hover: {
+    boxShadow: shadows.neomorphic.extruded[size],
+  },
+})
 
 // ============================================================================
 // TYPE EXPORTS

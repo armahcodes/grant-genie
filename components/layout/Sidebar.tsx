@@ -74,30 +74,31 @@ interface NavItemProps {
 
 const NavItem = ({ icon, children, href, isActive }: NavItemProps) => {
   return (
-    <Link
-      asChild
-      style={{ textDecoration: 'none' }}
-      _focus={{ boxShadow: 'none' }}
-      w="full"
-    >
-      <NextLink href={href}>
+    <NextLink href={href} passHref legacyBehavior>
+      <Link
+        style={{ textDecoration: 'none' }}
+        _focus={{ boxShadow: 'none' }}
+        w="full"
+      >
         <Flex
           align="center"
           p="3"
           mx="2"
-          borderRadius="lg"
+          borderRadius="2xl"
           role="group"
           cursor="pointer"
-          bg={isActive ? 'purple.50' : 'transparent'}
+          bg={isActive ? 'neomorphic.background' : 'transparent'}
           color={isActive ? 'purple.600' : 'inherit'}
+          boxShadow={isActive ? 'neo.inset.sm' : 'none'}
           _hover={{
-            bg: isActive ? 'purple.50' : 'gray.100',
+            bg: 'neomorphic.background',
+            boxShadow: isActive ? 'neo.inset.sm' : 'neo.sm',
           }}
           _focusVisible={{
             outline: '3px solid',
             outlineColor: 'purple.500',
             outlineOffset: '2px',
-            bg: isActive ? 'purple.50' : 'gray.100'
+            bg: 'neomorphic.background'
           }}
           transition="all 0.2s"
         >
@@ -111,8 +112,8 @@ const NavItem = ({ icon, children, href, isActive }: NavItemProps) => {
             {children}
           </Text>
         </Flex>
-      </NextLink>
-    </Link>
+      </Link>
+    </NextLink>
   )
 }
 
@@ -134,12 +135,12 @@ const SidebarContent = ({ onClose }: { onClose?: () => void }) => {
 
   return (
     <Box
-      bg="white"
-      borderRight={{ base: 'none', md: '1px' }}
-      borderColor="gray.200"
+      bg="neomorphic.surface"
+      borderRight="none"
       h="full"
       display="flex"
       flexDirection="column"
+      boxShadow={{ base: 'none', md: 'neo.md' }}
     >
       <Flex h="20" alignItems="center" mx="4" justifyContent="space-between">
         <Text
@@ -203,8 +204,7 @@ const SidebarContent = ({ onClose }: { onClose?: () => void }) => {
 
       {/* User Profile Section */}
       <Box
-        borderTop="1px"
-        borderColor="gray.200"
+        borderTop="none"
         p={4}
       >
         <MenuRoot>
@@ -213,8 +213,9 @@ const SidebarContent = ({ onClose }: { onClose?: () => void }) => {
               variant="ghost"
               w="full"
               textAlign="left"
+              color="purple.900"
               aria-label={`User menu for ${user?.displayName || 'User'}`}
-              _hover={{ bg: 'gray.100' }}
+              _hover={{ bg: 'neomorphic.background', boxShadow: 'neo.sm' }}
               _focusVisible={{
                 outline: '3px solid',
                 outlineColor: 'purple.500',
@@ -228,10 +229,10 @@ const SidebarContent = ({ onClose }: { onClose?: () => void }) => {
                   </Avatar.Fallback>
                 </Avatar.Root>
                 <VStack align="start" gap={0} flex={1}>
-                  <Text fontSize="sm" fontWeight="semibold" lineClamp={1}>
+                  <Text fontSize="sm" fontWeight="semibold" color="purple.900" lineClamp={1}>
                     {user?.displayName || 'User'}
                   </Text>
-                  <Text fontSize="xs" color="gray.500" lineClamp={1}>
+                  <Text fontSize="xs" color="purple.600" lineClamp={1}>
                     {user?.primaryEmail || 'No email'}
                   </Text>
                 </VStack>
@@ -283,14 +284,14 @@ export default function Sidebar() {
         top={0}
         left={0}
         right={0}
-        bg="white"
-        borderBottom="1px"
-        borderColor="gray.200"
+        h="56px"
+        bg="neomorphic.surface"
+        borderBottom="none"
+        boxShadow="neo.sm"
         zIndex={10}
         px={4}
-        py={3}
       >
-        <Flex justify="space-between" align="center">
+        <Flex justify="space-between" align="center" h="full">
           <Text
             fontSize="xl"
             fontWeight="bold"
@@ -351,6 +352,7 @@ export default function Sidebar() {
         position="fixed"
         left={0}
         top={0}
+        zIndex={5}
       >
         <SidebarContent />
       </Box>

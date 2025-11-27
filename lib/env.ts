@@ -16,24 +16,23 @@ const envSchema = z.object({
   NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY: z.string().min(1, 'NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY is required'),
   STACK_SECRET_SERVER_KEY: z.string().min(1, 'STACK_SECRET_SERVER_KEY is required'),
   
-  // OpenAI
-  OPENAI_API_KEY: z.string().min(1, 'OPENAI_API_KEY is required'),
-  
+  // Vercel AI Gateway
+  AI_GATEWAY_API_KEY: z.string().min(1, 'AI_GATEWAY_API_KEY is required'),
+
   // Vercel Blob (optional)
   BLOB_READ_WRITE_TOKEN: z.string().optional(),
-  
-  // Upstash Redis (for rate limiting)
-  UPSTASH_REDIS_REST_URL: z.string().url('UPSTASH_REDIS_REST_URL must be a valid URL'),
-  UPSTASH_REDIS_REST_TOKEN: z.string().min(1, 'UPSTASH_REDIS_REST_TOKEN is required'),
   
   // Environment
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   
   // Optional API URL
   NEXT_PUBLIC_API_URL: z.string().url().optional().or(z.literal('')),
-  
+
   // Optional App URL (for server-side prefetching)
   NEXT_PUBLIC_APP_URL: z.string().url().optional().or(z.literal('')),
+
+  // Vercel Cron Secret (for scheduled jobs)
+  CRON_SECRET: z.string().optional(),
 })
 
 // Parse and validate environment variables

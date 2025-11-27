@@ -16,6 +16,9 @@ import {
   Badge,
   Flex,
   SimpleGrid,
+  NativeSelectRoot,
+  NativeSelectField,
+  RadioGroup,
 } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { FiUpload, FiX, FiArrowRight } from 'react-icons/fi'
@@ -48,7 +51,7 @@ export default function DonorMeetingGeniePage() {
 
   return (
     <MainLayout>
-      <Box minH="100vh" bg="purple.50">
+      <Box minH="100vh" bg="neomorphic.background">
         <Container maxW="container.xl" py={8}>
         <VStack gap={8} align="stretch">
           {/* Header */}
@@ -68,7 +71,7 @@ export default function DonorMeetingGeniePage() {
 
           <SimpleGrid columns={{ base: 1, lg: 2 }} gap={8}>
             {/* Left Column - Setup Form */}
-            <Card.Root>
+            <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
               <Card.Header>
                 <Heading size="md" color="purple.900">
                   Teach The Donor Genie
@@ -100,22 +103,18 @@ export default function DonorMeetingGeniePage() {
                     <Text fontWeight="semibold" color="purple.900">
                       Donor Type (Required)
                     </Text>
-                    <select
-                      style={{
-                        width: '100%',
-                        padding: '0.5rem',
-                        borderRadius: '0.375rem',
-                        border: '1px solid #E2E8F0',
-                      }}
-                      value={sessionConfig.donorType}
-                      onChange={(e) => setSessionConfig({ donorType: e.target.value as any })}
-                    >
-                      <option value="">Select donor type...</option>
-                      <option value="Individual">Major Individual</option>
-                      <option value="Foundation">Foundation</option>
-                      <option value="Corporate">Corporate</option>
-                      <option value="Planned Giving">Planned Giving</option>
-                    </select>
+                    <NativeSelectRoot w="full">
+                      <NativeSelectField
+                        value={sessionConfig.donorType}
+                        onChange={(e) => setSessionConfig({ donorType: e.target.value as any })}
+                        placeholder="Select donor type..."
+                      >
+                        <option value="Individual">Major Individual</option>
+                        <option value="Foundation">Foundation</option>
+                        <option value="Corporate">Corporate</option>
+                        <option value="Planned Giving">Planned Giving</option>
+                      </NativeSelectField>
+                    </NativeSelectRoot>
                   </VStack>
 
                   {/* Warmth Factor */}
@@ -191,38 +190,28 @@ export default function DonorMeetingGeniePage() {
                     <Text fontWeight="semibold" color="purple.900">
                       Practice Format
                     </Text>
-                    <Stack gap={2}>
-                      <HStack>
-                        <input
-                          type="radio"
-                          name="practiceFormat"
-                          value="conversation"
-                          checked={sessionConfig.practiceMode === 'conversation'}
-                          onChange={(e) => setSessionConfig({ practiceMode: 'conversation' })}
-                        />
-                        <Text fontSize="sm">Two-way conversation</Text>
-                      </HStack>
-                      <HStack>
-                        <input
-                          type="radio"
-                          name="practiceFormat"
-                          value="pitch"
-                          checked={sessionConfig.practiceMode === 'pitch'}
-                          onChange={(e) => setSessionConfig({ practiceMode: 'pitch' })}
-                        />
-                        <Text fontSize="sm">Elevator pitch</Text>
-                      </HStack>
-                      <HStack>
-                        <input
-                          type="radio"
-                          name="practiceFormat"
-                          value="objection-handling"
-                          checked={sessionConfig.practiceMode === 'objection-handling'}
-                          onChange={(e) => setSessionConfig({ practiceMode: 'objection-handling' })}
-                        />
-                        <Text fontSize="sm">Objection handling only</Text>
-                      </HStack>
-                    </Stack>
+                    <RadioGroup.Root
+                      value={sessionConfig.practiceMode || ''}
+                      onValueChange={(details) => setSessionConfig({ practiceMode: details.value as any })}
+                    >
+                      <Stack gap={2}>
+                        <RadioGroup.Item value="conversation">
+                          <RadioGroup.ItemHiddenInput />
+                          <RadioGroup.ItemIndicator />
+                          <RadioGroup.ItemText>Two-way conversation</RadioGroup.ItemText>
+                        </RadioGroup.Item>
+                        <RadioGroup.Item value="pitch">
+                          <RadioGroup.ItemHiddenInput />
+                          <RadioGroup.ItemIndicator />
+                          <RadioGroup.ItemText>Elevator pitch</RadioGroup.ItemText>
+                        </RadioGroup.Item>
+                        <RadioGroup.Item value="objection-handling">
+                          <RadioGroup.ItemHiddenInput />
+                          <RadioGroup.ItemIndicator />
+                          <RadioGroup.ItemText>Objection handling only</RadioGroup.ItemText>
+                        </RadioGroup.Item>
+                      </Stack>
+                    </RadioGroup.Root>
                   </VStack>
 
                   {/* Google My Inputs */}
@@ -242,6 +231,18 @@ export default function DonorMeetingGeniePage() {
                       flex={1}
                       variant="outline"
                       colorPalette="purple"
+                      color="purple.900"
+                      bg="neomorphic.background"
+                      border="none"
+                      borderRadius="2xl"
+                      boxShadow="neo.sm"
+                      _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                      _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+                      _focusVisible={{
+                        outline: '3px solid',
+                        outlineColor: 'purple.500',
+                        outlineOffset: '2px',
+                      }}
                     >
                       Edit Session
                     </Button>
@@ -249,6 +250,18 @@ export default function DonorMeetingGeniePage() {
                       flex={1}
                       variant="outline"
                       colorPalette="purple"
+                      color="purple.900"
+                      bg="neomorphic.background"
+                      border="none"
+                      borderRadius="2xl"
+                      boxShadow="neo.sm"
+                      _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                      _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+                      _focusVisible={{
+                        outline: '3px solid',
+                        outlineColor: 'purple.500',
+                        outlineOffset: '2px',
+                      }}
                     >
                       Regenerate
                     </Button>
@@ -256,6 +269,18 @@ export default function DonorMeetingGeniePage() {
                       flex={1}
                       variant="outline"
                       colorPalette="purple"
+                      color="purple.900"
+                      bg="neomorphic.background"
+                      border="none"
+                      borderRadius="2xl"
+                      boxShadow="neo.sm"
+                      _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                      _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+                      _focusVisible={{
+                        outline: '3px solid',
+                        outlineColor: 'purple.500',
+                        outlineOffset: '2px',
+                      }}
                     >
                       Export
                     </Button>
@@ -264,8 +289,18 @@ export default function DonorMeetingGeniePage() {
                   <Button
                     w="full"
                     colorPalette="purple"
+                    color="white"
                     size="lg"
                     onClick={handleStartPractice}
+                    borderRadius="2xl"
+                    boxShadow="neo.md"
+                    _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                    _active={{ transform: 'scale(0.98)', boxShadow: 'neo.sm' }}
+                    _focusVisible={{
+                      outline: '3px solid',
+                      outlineColor: 'purple.500',
+                      outlineOffset: '2px',
+                    }}
                   >
                     Start Practice Session
                     <Icon as={FiArrowRight} ml={2} />
@@ -275,7 +310,7 @@ export default function DonorMeetingGeniePage() {
             </Card.Root>
 
             {/* Right Column - Preview */}
-            <Card.Root bg="purple.50" border="1px solid" borderColor="purple.200">
+            <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
               <Card.Header>
                 <Heading size="md" color="purple.900">
                   Practice Session Preview
@@ -288,10 +323,10 @@ export default function DonorMeetingGeniePage() {
                 <VStack gap={4} align="stretch">
                   <Box
                     p={4}
-                    bg="white"
-                    borderRadius="lg"
-                    border="1px solid"
-                    borderColor="purple.200"
+                    bg="neomorphic.background"
+                    borderRadius="2xl"
+                    boxShadow="neo.inset.sm"
+                    border="none"
                   >
                     <Text fontSize="sm" color="purple.600" mb={2}>
                       Donor Profile Preview
@@ -303,10 +338,10 @@ export default function DonorMeetingGeniePage() {
 
                   <Box
                     p={4}
-                    bg="white"
-                    borderRadius="lg"
-                    border="1px solid"
-                    borderColor="purple.200"
+                    bg="neomorphic.background"
+                    borderRadius="2xl"
+                    boxShadow="neo.inset.sm"
+                    border="none"
                   >
                     <Text fontSize="sm" color="purple.600" mb={2}>
                       Practice Format
@@ -321,10 +356,10 @@ export default function DonorMeetingGeniePage() {
                   {sessionConfig.warmthLevel && (
                     <Box
                       p={4}
-                      bg="white"
-                      borderRadius="lg"
-                      border="1px solid"
-                      borderColor="purple.200"
+                      bg="neomorphic.background"
+                      borderRadius="2xl"
+                      boxShadow="neo.inset.sm"
+                      border="none"
                     >
                       <Text fontSize="sm" color="purple.600" mb={2}>
                         Warmth Factor
@@ -335,7 +370,7 @@ export default function DonorMeetingGeniePage() {
                     </Box>
                   )}
 
-                  <Box p={4} bg="purple.100" borderRadius="lg">
+                  <Box p={4} bg="neomorphic.background" borderRadius="2xl" boxShadow="neo.inset.sm">
                     <Text fontSize="xs" color="purple.700" fontStyle="italic">
                       Fill out the form to see a live preview of how your practice session will be structured.
                     </Text>

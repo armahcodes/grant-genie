@@ -98,7 +98,17 @@ export default function LoginModal({ isOpen, onClose, onSwitchToSignup }: LoginM
                   onChange={(e) => setEmail(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
                   color="purple.900"
-                  _placeholder={{ color: 'gray.500' }}
+                  _placeholder={{ color: 'purple.400' }}
+                  bg="neomorphic.background"
+                  border="none"
+                  borderRadius="2xl"
+                  boxShadow="neo.inset.sm"
+                  _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
+                  _focusVisible={{
+                    outline: '3px solid',
+                    outlineColor: 'purple.500',
+                    outlineOffset: '2px',
+                  }}
                 />
               </Field.Root>
 
@@ -111,7 +121,17 @@ export default function LoginModal({ isOpen, onClose, onSwitchToSignup }: LoginM
                   onChange={(e) => setPassword(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
                   color="purple.900"
-                  _placeholder={{ color: 'gray.500' }}
+                  _placeholder={{ color: 'purple.400' }}
+                  bg="neomorphic.background"
+                  border="none"
+                  borderRadius="2xl"
+                  boxShadow="neo.inset.sm"
+                  _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
+                  _focusVisible={{
+                    outline: '3px solid',
+                    outlineColor: 'purple.500',
+                    outlineOffset: '2px',
+                  }}
                 />
               </Field.Root>
 
@@ -134,6 +154,19 @@ export default function LoginModal({ isOpen, onClose, onSwitchToSignup }: LoginM
                 w="full"
                 onClick={handleLogin}
                 loading={isLoading}
+                borderRadius="2xl"
+                boxShadow="neo.md"
+                py={6}
+                fontSize="md"
+                fontWeight="semibold"
+                color="white"
+                _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                _active={{ boxShadow: 'neo.sm', transform: 'translateY(0)' }}
+                _focusVisible={{
+                  outline: '3px solid',
+                  outlineColor: 'purple.500',
+                  outlineOffset: '2px',
+                }}
               >
                 Log In
               </Button>
@@ -150,6 +183,21 @@ export default function LoginModal({ isOpen, onClose, onSwitchToSignup }: LoginM
                 w="full"
                 variant="outline"
                 onClick={handleGoogleLogin}
+                color="purple.900"
+                bg="neomorphic.background"
+                border="none"
+                borderRadius="2xl"
+                boxShadow="neo.sm"
+                py={6}
+                fontSize="md"
+                fontWeight="semibold"
+                _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+                _focusVisible={{
+                  outline: '3px solid',
+                  outlineColor: 'purple.500',
+                  outlineOffset: '2px',
+                }}
               >
                 <svg width="18" height="18" viewBox="0 0 18 18">
                   <path

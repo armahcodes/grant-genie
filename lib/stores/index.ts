@@ -184,6 +184,11 @@ export const useGrantsStore = create<GrantsState>()(
 // ============================================================================
 
 interface GrantGenieState {
+  // Session tracking
+  sessionId: number | null
+  sessionName: string
+
+  // Form data
   formData: {
     projectName: string
     funderName: string
@@ -194,15 +199,28 @@ interface GrantGenieState {
   }
   proposalContent: string
   isGenerating: boolean
+  isSaving: boolean
+
+  // Actions
+  setSessionId: (id: number | null) => void
+  setSessionName: (name: string) => void
   setFormData: (data: Partial<GrantGenieState['formData']>) => void
   setProposalContent: (content: string) => void
   setIsGenerating: (isGenerating: boolean) => void
+  setIsSaving: (isSaving: boolean) => void
   resetGrantGenie: () => void
+
+  // Database persistence
+  saveSessionToDb: () => Promise<number | null>
+  loadSessionFromDb: (sessionId: number) => Promise<void>
 }
 
 export const useGrantGenieStore = create<GrantGenieState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
+      // Initial state
+      sessionId: null,
+      sessionName: '',
       formData: {
         projectName: '',
         funderName: '',
@@ -213,14 +231,22 @@ export const useGrantGenieStore = create<GrantGenieState>()(
       },
       proposalContent: '',
       isGenerating: false,
+      isSaving: false,
+
+      // Actions
+      setSessionId: (id) => set({ sessionId: id }),
+      setSessionName: (name) => set({ sessionName: name }),
       setFormData: (data) =>
         set((state) => ({
           formData: { ...state.formData, ...data },
         })),
       setProposalContent: (content) => set({ proposalContent: content }),
       setIsGenerating: (isGenerating) => set({ isGenerating }),
+      setIsSaving: (isSaving) => set({ isSaving }),
       resetGrantGenie: () =>
         set({
+          sessionId: null,
+          sessionName: '',
           formData: {
             projectName: '',
             funderName: '',
@@ -231,15 +257,108 @@ export const useGrantGenieStore = create<GrantGenieState>()(
           },
           proposalContent: '',
           isGenerating: false,
+          isSaving: false,
         }),
+
+      // Database persistence
+      saveSessionToDb: async () => {
+        const state = get()
+        set({ isSaving: true })
+
+        try {
+          const sessionData = {
+            name: state.sessionName || state.formData.projectName || 'Untitled Session',
+            genieType: 'grant_writing' as const,
+            config: {},
+            inputData: state.formData,
+            outputContent: state.proposalContent || undefined,
+            status: state.proposalContent ? 'completed' : 'draft',
+          }
+
+          let response
+          if (state.sessionId) {
+            // Update existing session
+            response = await fetch(`/api/genie-sessions/${state.sessionId}`, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                ...sessionData,
+                logExecution: !!state.proposalContent,
+              }),
+            })
+          } else {
+            // Create new session
+            response = await fetch('/api/genie-sessions', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(sessionData),
+            })
+          }
+
+          if (!response.ok) {
+            throw new Error('Failed to save session')
+          }
+
+          const result = await response.json()
+          const newSessionId = result.data?.id || state.sessionId
+
+          set({ sessionId: newSessionId })
+          return newSessionId
+        } catch (error) {
+          console.error('Failed to save genie session:', error)
+          return null
+        } finally {
+          set({ isSaving: false })
+        }
+      },
+
+      loadSessionFromDb: async (sessionId: number) => {
+        try {
+          const response = await fetch(`/api/genie-sessions/${sessionId}`)
+          if (!response.ok) {
+            throw new Error('Failed to load session')
+          }
+
+          const result = await response.json()
+          const session = result.data
+
+          set({
+            sessionId: session.id,
+            sessionName: session.name,
+            formData: session.inputData || {
+              projectName: '',
+              funderName: '',
+              fundingAmount: '',
+              deadline: '',
+              rfpText: '',
+              teachingMaterials: '',
+            },
+            proposalContent: session.outputContent || '',
+          })
+        } catch (error) {
+          console.error('Failed to load genie session:', error)
+          throw error
+        }
+      },
     }),
     {
       name: 'grant-genie-store',
+      partialize: (state) => ({
+        sessionId: state.sessionId,
+        sessionName: state.sessionName,
+        formData: state.formData,
+        proposalContent: state.proposalContent,
+      }),
     }
   )
 )
 
 interface DonorGenieState {
+  // Session tracking
+  sessionId: number | null
+  sessionName: string
+
+  // Session config
   sessionConfig: {
     donorProfile: string
     donorType: string
@@ -255,17 +374,30 @@ interface DonorGenieState {
   coachingTips: string[]
   score: number | null
   isActive: boolean
+  isSaving: boolean
+
+  // Actions
+  setSessionId: (id: number | null) => void
+  setSessionName: (name: string) => void
   setSessionConfig: (config: Partial<DonorGenieState['sessionConfig']>) => void
   addMessage: (message: { role: 'user' | 'assistant'; content: string }) => void
   addCoachingTip: (tip: string) => void
   setScore: (score: number) => void
   setIsActive: (isActive: boolean) => void
+  setIsSaving: (isSaving: boolean) => void
   resetDonorGenie: () => void
+
+  // Database persistence
+  saveSessionToDb: () => Promise<number | null>
+  loadSessionFromDb: (sessionId: number) => Promise<void>
 }
 
 export const useDonorGenieStore = create<DonorGenieState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
+      // Initial state
+      sessionId: null,
+      sessionName: '',
       sessionConfig: {
         donorProfile: '',
         donorType: 'Individual',
@@ -276,6 +408,11 @@ export const useDonorGenieStore = create<DonorGenieState>()(
       coachingTips: [],
       score: null,
       isActive: false,
+      isSaving: false,
+
+      // Actions
+      setSessionId: (id) => set({ sessionId: id }),
+      setSessionName: (name) => set({ sessionName: name }),
       setSessionConfig: (config) =>
         set((state) => ({
           sessionConfig: { ...state.sessionConfig, ...config },
@@ -290,8 +427,11 @@ export const useDonorGenieStore = create<DonorGenieState>()(
         })),
       setScore: (score) => set({ score }),
       setIsActive: (isActive) => set({ isActive }),
+      setIsSaving: (isSaving) => set({ isSaving }),
       resetDonorGenie: () =>
         set({
+          sessionId: null,
+          sessionName: '',
           sessionConfig: {
             donorProfile: '',
             donorType: 'Individual',
@@ -302,10 +442,108 @@ export const useDonorGenieStore = create<DonorGenieState>()(
           coachingTips: [],
           score: null,
           isActive: false,
+          isSaving: false,
         }),
+
+      // Database persistence
+      saveSessionToDb: async () => {
+        const state = get()
+        set({ isSaving: true })
+
+        try {
+          const sessionData = {
+            name: state.sessionName || `Donor Practice - ${state.sessionConfig.donorType}` || 'Untitled Session',
+            genieType: 'donor_meeting' as const,
+            config: state.sessionConfig,
+            inputData: { donorProfile: state.sessionConfig.donorProfile },
+            conversationHistory: state.conversationHistory.map((m) => ({
+              ...m,
+              timestamp: new Date().toISOString(),
+            })),
+            outputMetadata: {
+              coachingTips: state.coachingTips,
+              score: state.score,
+            },
+            status: state.isActive ? 'in_progress' : (state.score !== null ? 'completed' : 'draft'),
+          }
+
+          let response
+          if (state.sessionId) {
+            // Update existing session
+            response = await fetch(`/api/genie-sessions/${state.sessionId}`, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                ...sessionData,
+                logExecution: state.score !== null,
+              }),
+            })
+          } else {
+            // Create new session
+            response = await fetch('/api/genie-sessions', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(sessionData),
+            })
+          }
+
+          if (!response.ok) {
+            throw new Error('Failed to save session')
+          }
+
+          const result = await response.json()
+          const newSessionId = result.data?.id || state.sessionId
+
+          set({ sessionId: newSessionId })
+          return newSessionId
+        } catch (error) {
+          console.error('Failed to save donor genie session:', error)
+          return null
+        } finally {
+          set({ isSaving: false })
+        }
+      },
+
+      loadSessionFromDb: async (sessionId: number) => {
+        try {
+          const response = await fetch(`/api/genie-sessions/${sessionId}`)
+          if (!response.ok) {
+            throw new Error('Failed to load session')
+          }
+
+          const result = await response.json()
+          const session = result.data
+
+          set({
+            sessionId: session.id,
+            sessionName: session.name,
+            sessionConfig: session.config || {
+              donorProfile: '',
+              donorType: 'Individual',
+              warmthFactor: 'Warm',
+              practiceFormat: 'First Meeting',
+            },
+            conversationHistory: session.conversationHistory || [],
+            coachingTips: session.outputMetadata?.coachingTips || [],
+            score: session.outputMetadata?.score || null,
+            isActive: session.status === 'in_progress',
+          })
+        } catch (error) {
+          console.error('Failed to load donor genie session:', error)
+          throw error
+        }
+      },
     }),
     {
       name: 'donor-genie-store',
+      partialize: (state) => ({
+        sessionId: state.sessionId,
+        sessionName: state.sessionName,
+        sessionConfig: state.sessionConfig,
+        conversationHistory: state.conversationHistory,
+        coachingTips: state.coachingTips,
+        score: state.score,
+      }),
     }
   )
 )

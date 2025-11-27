@@ -269,7 +269,7 @@ export default function GrantSearchPage() {
           </Box>
 
           {/* Search Bar */}
-          <Card.Root>
+          <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
             <Card.Body>
               <VStack gap={4} align="stretch">
                 <HStack>
@@ -280,14 +280,28 @@ export default function GrantSearchPage() {
                     placeholder="Search grants by keyword, organization, or category... (Press / to focus)"
                     value={filters.searchQuery}
                     onChange={(e) => setFilters({ searchQuery: e.target.value })}
+                    bg="neomorphic.background"
+                    border="none"
+                    borderRadius="2xl"
+                    boxShadow="neo.inset.sm"
+                    color="purple.900"
+                    _placeholder={{ color: 'gray.500' }}
+                    _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
                   />
                 </HStack>
 
                 <SimpleGrid columns={{ base: 1, md: 4 }} gap={gaps.normal}>
-                  <NativeSelectRoot>
+                  <NativeSelectRoot
+                    bg="neomorphic.background"
+                    borderRadius="2xl"
+                    boxShadow="neo.inset.sm"
+                  >
                     <NativeSelectField
                       value={filters.category}
                       onChange={(e) => setFilters({ category: e.target.value })}
+                      border="none"
+                      color="purple.900"
+                      _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
                     >
                       {categories.map((cat, index) => (
                         <option key={index} value={cat.toLowerCase()}>
@@ -297,7 +311,11 @@ export default function GrantSearchPage() {
                     </NativeSelectField>
                   </NativeSelectRoot>
 
-                  <NativeSelectRoot>
+                  <NativeSelectRoot
+                    bg="neomorphic.background"
+                    borderRadius="2xl"
+                    boxShadow="neo.inset.sm"
+                  >
                     <NativeSelectField
                       placeholder="Funding Amount"
                       onChange={(e) => {
@@ -314,6 +332,9 @@ export default function GrantSearchPage() {
                           setFilters({ amountRange: { min: 500000, max: 1000000 } })
                         }
                       }}
+                      border="none"
+                      color="purple.900"
+                      _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
                     >
                       <option value="all">All Amounts</option>
                       <option value="0-25k">$0 - $25,000</option>
@@ -323,11 +344,18 @@ export default function GrantSearchPage() {
                     </NativeSelectField>
                   </NativeSelectRoot>
 
-                  <NativeSelectRoot>
+                  <NativeSelectRoot
+                    bg="neomorphic.background"
+                    borderRadius="2xl"
+                    boxShadow="neo.inset.sm"
+                  >
                     <NativeSelectField
                       placeholder="Deadline"
                       value={filters.deadline}
                       onChange={(e) => setFilters({ deadline: e.target.value as any })}
+                      border="none"
+                      color="purple.900"
+                      _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
                     >
                       <option value="all">All Deadlines</option>
                       <option value="30days">Next 30 days</option>
@@ -336,11 +364,18 @@ export default function GrantSearchPage() {
                     </NativeSelectField>
                   </NativeSelectRoot>
 
-                  <NativeSelectRoot>
+                  <NativeSelectRoot
+                    bg="neomorphic.background"
+                    borderRadius="2xl"
+                    boxShadow="neo.inset.sm"
+                  >
                     <NativeSelectField
                       placeholder="Status"
                       value={filters.status}
                       onChange={(e) => setFilters({ status: e.target.value as any })}
+                      border="none"
+                      color="purple.900"
+                      _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
                     >
                       <option value="all">All Statuses</option>
                       <option value="open">Open</option>
@@ -352,11 +387,33 @@ export default function GrantSearchPage() {
                 </SimpleGrid>
 
                 <HStack justify="space-between">
-                  <Button variant="outline" size="md" aria-label="Open advanced filters">
+                  <Button
+                    variant="outline"
+                    size="md"
+                    color="purple.900"
+                    aria-label="Open advanced filters"
+                    bg="neomorphic.background"
+                    border="none"
+                    borderRadius="2xl"
+                    boxShadow="neo.sm"
+                    _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                    _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+                  >
                     <Icon as={FiFilter} />
                     Advanced Filters
                   </Button>
-                  <Button variant="outline" size="md" aria-label="View saved searches">
+                  <Button
+                    variant="outline"
+                    size="md"
+                    color="purple.900"
+                    aria-label="View saved searches"
+                    bg="neomorphic.background"
+                    border="none"
+                    borderRadius="2xl"
+                    boxShadow="neo.sm"
+                    _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                    _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+                  >
                     <Icon as={FiBookmark} />
                     Saved Searches
                   </Button>
@@ -401,10 +458,19 @@ export default function GrantSearchPage() {
               <Text fontSize="sm" color="purple.800">
                 Sort by:
               </Text>
-              <NativeSelectRoot w="180px" size="sm">
+              <NativeSelectRoot
+                w="180px"
+                size="sm"
+                bg="neomorphic.background"
+                borderRadius="2xl"
+                boxShadow="neo.inset.sm"
+              >
                 <NativeSelectField
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as SortOption)}
+                  border="none"
+                  color="purple.900"
+                  _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
                 >
                   <option value="relevance">Relevance</option>
                   <option value="deadline">Deadline</option>
@@ -429,12 +495,15 @@ export default function GrantSearchPage() {
                 tabIndex={0}
                 role="article"
                 aria-label={`Grant opportunity: ${grant.title}`}
-                _hover={{ bg: 'purple.50', transform: 'translateY(-4px) scale(1.01)', boxShadow: 'xl' }}
+                bg="neomorphic.surface"
+                borderRadius="3xl"
+                boxShadow="neo.md"
+                border="none"
+                _hover={{ transform: 'translateY(-4px)', boxShadow: 'neo.lg' }}
                 _focusVisible={{
                   outline: '3px solid',
                   outlineColor: 'purple.500',
-                  outlineOffset: '2px',
-                  bg: 'purple.50'
+                  outlineOffset: '2px'
                 }}
                 transition="all 0.3s"
                 onKeyDown={(e) => {
@@ -559,7 +628,14 @@ export default function GrantSearchPage() {
                         variant="outline"
                         size="md"
                         colorPalette="purple"
+                        color="purple.900"
                         aria-label={`View details for ${grant.title}`}
+                        bg="neomorphic.background"
+                        border="none"
+                        borderRadius="2xl"
+                        boxShadow="neo.sm"
+                        _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                        _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
                         _focusVisible={{
                           outline: '3px solid',
                           outlineColor: 'purple.500',
@@ -570,12 +646,17 @@ export default function GrantSearchPage() {
                       </Button>
                       <Button
                         colorPalette="purple"
+                        color="white"
                         size="lg"
                         aria-label={`Start application for ${grant.title}`}
                         onClick={(e) => {
                           e.stopPropagation()
                           router.push('/grant-application')
                         }}
+                        borderRadius="2xl"
+                        boxShadow="neo.md"
+                        _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                        _active={{ transform: 'scale(0.98)', boxShadow: 'neo.sm' }}
                         _focusVisible={{
                           outline: '3px solid',
                           outlineColor: 'purple.500',
@@ -598,9 +679,16 @@ export default function GrantSearchPage() {
               <Button
                 variant="outline"
                 size="md"
+                color="purple.900"
                 aria-label="Go to previous page"
                 disabled={currentPage === 1}
                 onClick={() => goToPage(currentPage - 1)}
+                bg="neomorphic.background"
+                border="none"
+                borderRadius="2xl"
+                boxShadow="neo.sm"
+                _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
                 _focusVisible={{
                   outline: '3px solid',
                   outlineColor: 'purple.500',
@@ -634,6 +722,11 @@ export default function GrantSearchPage() {
                       aria-label={isCurrentPage ? `Page ${pageNum}, current page` : `Go to page ${pageNum}`}
                       aria-current={isCurrentPage ? 'page' : undefined}
                       onClick={() => goToPage(pageNum)}
+                      bg={isCurrentPage ? undefined : 'neomorphic.background'}
+                      borderRadius="2xl"
+                      boxShadow={isCurrentPage ? 'neo.md' : 'neo.sm'}
+                      _hover={{ boxShadow: isCurrentPage ? 'neo.lg' : 'neo.md', transform: 'translateY(-2px)' }}
+                      _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
                       _focusVisible={{
                         outline: '3px solid',
                         outlineColor: 'purple.500',
@@ -648,9 +741,16 @@ export default function GrantSearchPage() {
               <Button
                 variant="outline"
                 size="md"
+                color="purple.900"
                 aria-label="Go to next page"
                 disabled={currentPage === totalPages}
                 onClick={() => goToPage(currentPage + 1)}
+                bg="neomorphic.background"
+                border="none"
+                borderRadius="2xl"
+                boxShadow="neo.sm"
+                _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
                 _focusVisible={{
                   outline: '3px solid',
                   outlineColor: 'purple.500',

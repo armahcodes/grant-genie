@@ -64,14 +64,31 @@ export default function ReportingPage() {
               </Text>
             </Box>
             <HStack>
-              <NativeSelectRoot w="200px">
-                <NativeSelectField defaultValue="2025">
+              <NativeSelectRoot
+                w="200px"
+                bg="neomorphic.background"
+                borderRadius="2xl"
+                boxShadow="neo.inset.sm"
+              >
+                <NativeSelectField
+                  defaultValue="2025"
+                  border="none"
+                  color="purple.900"
+                  _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
+                >
                   <option value="2025">Year: 2025</option>
                   <option value="2024">Year: 2024</option>
                   <option value="2023">Year: 2023</option>
                 </NativeSelectField>
               </NativeSelectRoot>
-              <Button colorPalette="purple">
+              <Button
+                colorPalette="purple"
+                color="white"
+                borderRadius="2xl"
+                boxShadow="neo.md"
+                _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                _active={{ transform: 'scale(0.98)', boxShadow: 'neo.sm' }}
+              >
                 <Icon as={FiDownload} />
                 Export Report
               </Button>
@@ -80,7 +97,14 @@ export default function ReportingPage() {
 
           {/* Key Metrics */}
           <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={6}>
-            <Card.Root>
+            <Card.Root
+              bg="neomorphic.surface"
+              borderRadius="3xl"
+              boxShadow="neo.md"
+              border="none"
+              _hover={{ transform: 'translateY(-4px)', boxShadow: 'neo.lg' }}
+              transition="all 0.3s"
+            >
               <Card.Body>
                 <Stat.Root>
                   <Stat.Label>Total Funding Secured</Stat.Label>
@@ -96,7 +120,14 @@ export default function ReportingPage() {
               </Card.Body>
             </Card.Root>
 
-            <Card.Root>
+            <Card.Root
+              bg="neomorphic.surface"
+              borderRadius="3xl"
+              boxShadow="neo.md"
+              border="none"
+              _hover={{ transform: 'translateY(-4px)', boxShadow: 'neo.lg' }}
+              transition="all 0.3s"
+            >
               <Card.Body>
                 <Stat.Root>
                   <Stat.Label>Active Grants</Stat.Label>
@@ -112,7 +143,14 @@ export default function ReportingPage() {
               </Card.Body>
             </Card.Root>
 
-            <Card.Root>
+            <Card.Root
+              bg="neomorphic.surface"
+              borderRadius="3xl"
+              boxShadow="neo.md"
+              border="none"
+              _hover={{ transform: 'translateY(-4px)', boxShadow: 'neo.lg' }}
+              transition="all 0.3s"
+            >
               <Card.Body>
                 <Stat.Root>
                   <Stat.Label>Success Rate</Stat.Label>
@@ -128,7 +166,14 @@ export default function ReportingPage() {
               </Card.Body>
             </Card.Root>
 
-            <Card.Root>
+            <Card.Root
+              bg="neomorphic.surface"
+              borderRadius="3xl"
+              boxShadow="neo.md"
+              border="none"
+              _hover={{ transform: 'translateY(-4px)', boxShadow: 'neo.lg' }}
+              transition="all 0.3s"
+            >
               <Card.Body>
                 <Stat.Root>
                   <Stat.Label>Compliance Rate</Stat.Label>
@@ -148,14 +193,23 @@ export default function ReportingPage() {
           {/* Charts Section */}
           <SimpleGrid columns={{ base: 1, lg: 2 }} gap={6}>
             {/* Funding by Category */}
-            <Card.Root>
+            <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
               <Card.Header>
                 <HStack justify="space-between">
                   <HStack>
                     <Icon as={FiPieChart} color="purple.500" />
                     <Heading size="md">Funding by Category</Heading>
                   </HStack>
-                  <Button size="sm" variant="ghost">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    color="purple.900"
+                    bg="neomorphic.background"
+                    borderRadius="2xl"
+                    boxShadow="neo.sm"
+                    _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                    _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+                  >
                     View Details
                   </Button>
                 </HStack>
@@ -193,14 +247,23 @@ export default function ReportingPage() {
             </Card.Root>
 
             {/* Application Timeline */}
-            <Card.Root>
+            <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
               <Card.Header>
                 <HStack justify="space-between">
                   <HStack>
                     <Icon as={FiBarChart2} color="purple.500" />
                     <Heading size="md">Application Timeline</Heading>
                   </HStack>
-                  <Button size="sm" variant="ghost">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    color="purple.900"
+                    bg="neomorphic.background"
+                    borderRadius="2xl"
+                    boxShadow="neo.sm"
+                    _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                    _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+                  >
                     View Details
                   </Button>
                 </HStack>
@@ -252,7 +315,7 @@ export default function ReportingPage() {
           </SimpleGrid>
 
           {/* Grant Performance Table */}
-          <Card.Root>
+          <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
             <Card.Header>
               <Heading size="md">Grant Performance Overview</Heading>
             </Card.Header>
@@ -295,7 +358,17 @@ export default function ReportingPage() {
                       </Table.Cell>
                       <Table.Cell fontSize="sm">{grant.endDate}</Table.Cell>
                       <Table.Cell>
-                        <Button size="xs" variant="outline">
+                        <Button
+                          size="xs"
+                          variant="outline"
+                          color="purple.900"
+                          bg="neomorphic.background"
+                          border="none"
+                          borderRadius="2xl"
+                          boxShadow="neo.sm"
+                          _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                          _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+                        >
                           View Report
                         </Button>
                       </Table.Cell>
@@ -308,13 +381,20 @@ export default function ReportingPage() {
           </Card.Root>
 
           {/* Report Templates */}
-          <Card.Root>
+          <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
             <Card.Header>
               <Heading size="md">Report Templates</Heading>
             </Card.Header>
             <Card.Body>
               <SimpleGrid columns={{ base: 1, md: 3 }} gap={4}>
-                <Card.Root variant="outline">
+                <Card.Root
+                  bg="neomorphic.background"
+                  borderRadius="2xl"
+                  boxShadow="neo.sm"
+                  border="none"
+                  _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
+                  transition="all 0.3s"
+                >
                   <Card.Body>
                     <VStack gap={3}>
                       <Icon as={FiFileText} boxSize={8} color="purple.500" />
@@ -322,7 +402,15 @@ export default function ReportingPage() {
                       <Text fontSize="sm" color="purple.700" textAlign="center">
                         Comprehensive financial report across all grants
                       </Text>
-                      <Button size="sm" w="full">
+                      <Button
+                        size="sm"
+                        w="full"
+                        colorPalette="purple"
+                        borderRadius="2xl"
+                        boxShadow="neo.sm"
+                        _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
+                        _active={{ transform: 'scale(0.98)', boxShadow: 'neo.inset.sm' }}
+                      >
                         <Icon as={FiDownload} />
                         Generate
                       </Button>
@@ -330,7 +418,14 @@ export default function ReportingPage() {
                   </Card.Body>
                 </Card.Root>
 
-                <Card.Root variant="outline">
+                <Card.Root
+                  bg="neomorphic.background"
+                  borderRadius="2xl"
+                  boxShadow="neo.sm"
+                  border="none"
+                  _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
+                  transition="all 0.3s"
+                >
                   <Card.Body>
                     <VStack gap={3}>
                       <Icon as={FiBarChart2} boxSize={8} color="purple.500" />
@@ -338,7 +433,15 @@ export default function ReportingPage() {
                       <Text fontSize="sm" color="purple.700" textAlign="center">
                         Measure program outcomes and community impact
                       </Text>
-                      <Button size="sm" w="full">
+                      <Button
+                        size="sm"
+                        w="full"
+                        colorPalette="purple"
+                        borderRadius="2xl"
+                        boxShadow="neo.sm"
+                        _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
+                        _active={{ transform: 'scale(0.98)', boxShadow: 'neo.inset.sm' }}
+                      >
                         <Icon as={FiDownload} />
                         Generate
                       </Button>
@@ -346,7 +449,14 @@ export default function ReportingPage() {
                   </Card.Body>
                 </Card.Root>
 
-                <Card.Root variant="outline">
+                <Card.Root
+                  bg="neomorphic.background"
+                  borderRadius="2xl"
+                  boxShadow="neo.sm"
+                  border="none"
+                  _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
+                  transition="all 0.3s"
+                >
                   <Card.Body>
                     <VStack gap={3}>
                       <Icon as={FiCheckCircle} boxSize={8} color="purple.500" />
@@ -354,7 +464,15 @@ export default function ReportingPage() {
                       <Text fontSize="sm" color="purple.700" textAlign="center">
                         Track compliance status and requirements
                       </Text>
-                      <Button size="sm" w="full">
+                      <Button
+                        size="sm"
+                        w="full"
+                        colorPalette="purple"
+                        borderRadius="2xl"
+                        boxShadow="neo.sm"
+                        _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)' }}
+                        _active={{ transform: 'scale(0.98)', boxShadow: 'neo.inset.sm' }}
+                      >
                         <Icon as={FiDownload} />
                         Generate
                       </Button>
@@ -366,15 +484,24 @@ export default function ReportingPage() {
           </Card.Root>
 
           {/* Export Options */}
-          <Card.Root>
+          <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
             <Card.Header>
               <Heading size="md">Custom Report Builder</Heading>
             </Card.Header>
             <Card.Body>
               <VStack gap={4} align="stretch">
                 <SimpleGrid columns={{ base: 1, md: 3 }} gap={4}>
-                  <NativeSelectRoot>
-                    <NativeSelectField placeholder="Select Date Range">
+                  <NativeSelectRoot
+                    bg="neomorphic.background"
+                    borderRadius="2xl"
+                    boxShadow="neo.inset.sm"
+                  >
+                    <NativeSelectField
+                      placeholder="Select Date Range"
+                      border="none"
+                      color="purple.900"
+                      _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
+                    >
                       <option value="last-month">Last Month</option>
                       <option value="last-quarter">Last Quarter</option>
                       <option value="last-year">Last Year</option>
@@ -382,16 +509,34 @@ export default function ReportingPage() {
                     </NativeSelectField>
                   </NativeSelectRoot>
 
-                  <NativeSelectRoot>
-                    <NativeSelectField placeholder="Select Grant(s)">
+                  <NativeSelectRoot
+                    bg="neomorphic.background"
+                    borderRadius="2xl"
+                    boxShadow="neo.inset.sm"
+                  >
+                    <NativeSelectField
+                      placeholder="Select Grant(s)"
+                      border="none"
+                      color="purple.900"
+                      _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
+                    >
                       <option value="all">All Grants</option>
                       <option value="active">Active Grants Only</option>
                       <option value="completed">Completed Grants Only</option>
                     </NativeSelectField>
                   </NativeSelectRoot>
 
-                  <NativeSelectRoot>
-                    <NativeSelectField placeholder="Export Format">
+                  <NativeSelectRoot
+                    bg="neomorphic.background"
+                    borderRadius="2xl"
+                    boxShadow="neo.inset.sm"
+                  >
+                    <NativeSelectField
+                      placeholder="Export Format"
+                      border="none"
+                      color="purple.900"
+                      _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
+                    >
                       <option value="pdf">PDF</option>
                       <option value="excel">Excel (XLSX)</option>
                       <option value="csv">CSV</option>
@@ -402,8 +547,26 @@ export default function ReportingPage() {
                 <Separator />
 
                 <HStack justify="flex-end">
-                  <Button variant="outline">Preview</Button>
-                  <Button colorPalette="purple">
+                  <Button
+                    variant="outline"
+                    color="purple.900"
+                    bg="neomorphic.background"
+                    border="none"
+                    borderRadius="2xl"
+                    boxShadow="neo.sm"
+                    _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                    _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+                  >
+                    Preview
+                  </Button>
+                  <Button
+                    colorPalette="purple"
+                    color="white"
+                    borderRadius="2xl"
+                    boxShadow="neo.md"
+                    _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                    _active={{ transform: 'scale(0.98)', boxShadow: 'neo.sm' }}
+                  >
                     <Icon as={FiDownload} />
                     Generate Custom Report
                   </Button>

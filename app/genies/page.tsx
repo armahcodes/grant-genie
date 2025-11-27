@@ -20,6 +20,7 @@ import {
   FiMail,
   FiSettings,
   FiPlus,
+  FiClock,
 } from 'react-icons/fi'
 import { useAuth } from '@/contexts/AuthContext'
 import MainLayout from '@/components/layout/MainLayout'
@@ -61,18 +62,44 @@ export default function GeniesPage() {
 
   return (
     <MainLayout>
-      <Box minH="100vh" bg="purple.50" py={12}>
+      <Box minH="100vh" bg="neomorphic.background" py={12}>
         <Container maxW="container.xl">
         <VStack gap={8} align="stretch">
           {/* Header */}
-          <VStack align="start" gap={2}>
-            <Heading size="2xl" color="purple.900">
-              Welcome back, {user?.name || 'there'}!
-            </Heading>
-            <Text fontSize="lg" color="purple.700">
-              Ready to make an impact today?
-            </Text>
-          </VStack>
+          <HStack justify="space-between" flexWrap="wrap" gap={4}>
+            <VStack align="start" gap={2}>
+              <Heading size="2xl" color="purple.900">
+                Welcome back, {user?.name || 'there'}!
+              </Heading>
+              <Text fontSize="lg" color="purple.700">
+                Ready to make an impact today?
+              </Text>
+            </VStack>
+            <Button
+              variant="outline"
+              colorPalette="purple"
+              onClick={() => router.push('/genies/history')}
+              color="purple.900"
+              bg="neomorphic.background"
+              border="none"
+              borderRadius="2xl"
+              boxShadow="neo.sm"
+              px={6}
+              py={5}
+              fontSize="sm"
+              fontWeight="semibold"
+              _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+              _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+              _focusVisible={{
+                outline: '3px solid',
+                outlineColor: 'purple.500',
+                outlineOffset: '2px',
+              }}
+            >
+              <Icon as={FiClock} mr={2} />
+              Session History
+            </Button>
+          </HStack>
 
           {/* What would you help with today? */}
           <VStack align="start" gap={6}>
@@ -95,10 +122,13 @@ export default function GeniesPage() {
                       router.push(genie.href)
                     }
                   }}
+                  bg="neomorphic.surface"
+                  borderRadius="3xl"
+                  boxShadow="neo.md"
+                  border="none"
                   _hover={{
-                    transform: 'translateY(-6px) scale(1.02)',
-                    boxShadow: '2xl',
-                    borderColor: 'purple.400',
+                    transform: 'translateY(-6px)',
+                    boxShadow: 'neo.xl',
                   }}
                   _focusVisible={{
                     outline: '3px solid',
@@ -107,17 +137,15 @@ export default function GeniesPage() {
                     transform: 'translateY(-4px)'
                   }}
                   transition="all 0.3s"
-                  border="1px solid"
-                  borderColor="purple.200"
-                  bg="white"
                 >
                   <Card.Body p={8}>
                     <HStack gap={4} align="start">
                       <Flex
                         w={14}
                         h={14}
-                        bg="purple.50"
-                        borderRadius="xl"
+                        bg="neomorphic.background"
+                        borderRadius="2xl"
+                        boxShadow="neo.inset.sm"
                         align="center"
                         justify="center"
                         flexShrink={0}
@@ -142,9 +170,10 @@ export default function GeniesPage() {
           {/* Create New Genie */}
           <Box mt={8}>
             <Card.Root
-              border="2px dashed"
-              borderColor="purple.300"
-              bg="white"
+              bg="neomorphic.surface"
+              borderRadius="3xl"
+              boxShadow="neo.inset.md"
+              border="none"
               cursor="pointer"
               tabIndex={0}
               role="button"
@@ -156,14 +185,12 @@ export default function GeniesPage() {
                 }
               }}
               _hover={{
-                borderColor: 'purple.400',
-                bg: 'purple.50',
+                boxShadow: 'neo.md',
               }}
               _focusVisible={{
                 outline: '3px solid',
                 outlineColor: 'purple.500',
-                outlineOffset: '2px',
-                bg: 'purple.50'
+                outlineOffset: '2px'
               }}
               transition="all 0.3s"
             >

@@ -142,10 +142,18 @@ export default function NotificationsPage() {
 
           {/* Filters */}
           <HStack gap={4}>
-            <NativeSelectRoot w="200px">
+            <NativeSelectRoot
+              w="200px"
+              bg="neomorphic.background"
+              borderRadius="2xl"
+              boxShadow="neo.inset.sm"
+            >
               <NativeSelectField
                 value={filterType}
                 onChange={(e) => setFilterType(e.target.value)}
+                border="none"
+                color="purple.900"
+                _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
               >
                 <option>All Alerts</option>
                 <option>Critical</option>
@@ -153,10 +161,18 @@ export default function NotificationsPage() {
                 <option>Info</option>
               </NativeSelectField>
             </NativeSelectRoot>
-            <NativeSelectRoot w="200px">
+            <NativeSelectRoot
+              w="200px"
+              bg="neomorphic.background"
+              borderRadius="2xl"
+              boxShadow="neo.inset.sm"
+            >
               <NativeSelectField
                 value={filterDays}
                 onChange={(e) => setFilterDays(e.target.value)}
+                border="none"
+                color="purple.900"
+                _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
               >
                 <option>Last 7 days</option>
                 <option>Last 30 days</option>
@@ -166,8 +182,13 @@ export default function NotificationsPage() {
             </NativeSelectRoot>
             <Button
               colorPalette="purple"
+              color="white"
               onClick={handleMarkAllAsRead}
               loading={markAllAsRead.isPending}
+              borderRadius="2xl"
+              boxShadow="neo.md"
+              _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+              _active={{ transform: 'scale(0.98)', boxShadow: 'neo.sm' }}
             >
               <Icon as={FiClock} />
               Mark All Read
@@ -190,9 +211,13 @@ export default function NotificationsPage() {
                   .map((notification) => (
                   <Card.Root
                     key={notification.id}
+                    bg="neomorphic.surface"
+                    borderRadius="3xl"
+                    boxShadow="neo.md"
+                    border="none"
                     borderLeft="4px solid"
                     borderLeftColor={`${getNotificationColor(notification.type)}.500`}
-                    _hover={{ bg: 'purple.50', transform: 'translateX(8px) scale(1.02)', boxShadow: 'lg' }}
+                    _hover={{ transform: 'translateX(8px)', boxShadow: 'neo.lg' }}
                     transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
                     cursor="pointer"
                     opacity={notification.read ? 0.6 : 1}
@@ -222,7 +247,18 @@ export default function NotificationsPage() {
                             {notification.message}
                           </Text>
                           <Box>
-                            <Button size="sm" colorPalette="purple" variant="outline">
+                            <Button
+                              size="sm"
+                              colorPalette="purple"
+                              variant="outline"
+                              color="purple.900"
+                              bg="neomorphic.background"
+                              border="none"
+                              borderRadius="2xl"
+                              boxShadow="neo.sm"
+                              _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                              _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+                            >
                               View Notification Details
                             </Button>
                           </Box>
@@ -251,9 +287,13 @@ export default function NotificationsPage() {
                   .map((notification) => (
                   <Card.Root
                     key={notification.id}
+                    bg="neomorphic.surface"
+                    borderRadius="3xl"
+                    boxShadow="neo.md"
+                    border="none"
                     borderLeft="4px solid"
                     borderLeftColor={`${getNotificationColor(notification.type)}.500`}
-                    _hover={{ bg: 'purple.50', transform: 'translateX(8px) scale(1.02)', boxShadow: 'lg' }}
+                    _hover={{ transform: 'translateX(8px)', boxShadow: 'neo.lg' }}
                     transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
                     cursor="pointer"
                     opacity={notification.read ? 0.6 : 1}
@@ -283,7 +323,18 @@ export default function NotificationsPage() {
                             {notification.message}
                           </Text>
                           <Box>
-                            <Button size="sm" colorPalette="purple" variant="outline">
+                            <Button
+                              size="sm"
+                              colorPalette="purple"
+                              variant="outline"
+                              color="purple.900"
+                              bg="neomorphic.background"
+                              border="none"
+                              borderRadius="2xl"
+                              boxShadow="neo.sm"
+                              _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                              _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+                            >
                               View Notification Details
                             </Button>
                           </Box>
@@ -297,7 +348,7 @@ export default function NotificationsPage() {
           </Box>
 
           {/* Notification Preferences */}
-          <Card.Root>
+          <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
             <Card.Body>
               <VStack gap={6} align="stretch">
                 <Heading size="md" color="purple.900">Notification Preferences</Heading>
@@ -355,9 +406,14 @@ export default function NotificationsPage() {
 
                 <Button
                   colorPalette="purple"
+                  color="white"
                   alignSelf="flex-start"
                   onClick={savePreferences}
                   loading={isSaving}
+                  borderRadius="2xl"
+                  boxShadow="neo.md"
+                  _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                  _active={{ transform: 'scale(0.98)', boxShadow: 'neo.sm' }}
                 >
                   {isSaving ? 'Saving...' : 'Save Preferences'}
                 </Button>

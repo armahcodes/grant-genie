@@ -36,6 +36,13 @@
       "when": 1761356672920,
       "tag": "0004_add_cascade_deletes",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1764207520081,
+      "tag": "0005_nice_thena",
+      "breakpoints": true
     }
   ]
 }

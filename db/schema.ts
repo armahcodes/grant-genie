@@ -422,14 +422,102 @@ export const activityLog = pgTable('activity_log', {
 })
 
 // ============================================================================
+// GENIE SESSIONS - Unified storage for all AI Genie interactions
+// ============================================================================
+
+// Genie Sessions - stores all genie types in one flexible table
+export const genieSessions = pgTable('genie_sessions', {
+  id: serial('id').primaryKey(),
+  userId: text('user_id').notNull().references(() => users.id),
+
+  // Session identification
+  name: text('name').notNull(), // User-provided name for the session
+  genieType: text('genie_type').notNull(), // 'grant_writing', 'donor_meeting', 'newsletter', 'email_management'
+
+  // Status tracking
+  status: text('status').notNull().default('draft'), // 'draft', 'in_progress', 'completed', 'archived'
+
+  // Flexible configuration storage (JSON)
+  config: jsonb('config').notNull().default('{}'), // Type-specific configuration
+
+  // Input data
+  inputData: jsonb('input_data'), // User-provided input (RFP text, donor profile, etc.)
+
+  // Output/Results
+  outputContent: text('output_content'), // Generated content (proposal, email draft, etc.)
+  outputMetadata: jsonb('output_metadata'), // Additional output data (scores, tips, etc.)
+
+  // Conversation history (for chat-based genies)
+  conversationHistory: jsonb('conversation_history'), // Array of {role, content, timestamp}
+
+  // Execution tracking
+  executionCount: integer('execution_count').default(0), // How many times regenerated
+  lastExecutedAt: timestamp('last_executed_at'),
+
+  // Associated entities (optional)
+  grantApplicationId: integer('grant_application_id').references(() => grantApplications.id),
+  donorId: integer('donor_id').references(() => donors.id),
+
+  // Timestamps
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+})
+
+// Genie Execution History - tracks each execution/regeneration
+export const genieExecutions = pgTable('genie_executions', {
+  id: serial('id').primaryKey(),
+  sessionId: integer('session_id').notNull().references(() => genieSessions.id, { onDelete: 'cascade' }),
+
+  // Execution details
+  executionNumber: integer('execution_number').notNull(),
+  inputSnapshot: jsonb('input_snapshot'), // Snapshot of input at execution time
+  outputSnapshot: text('output_snapshot'), // Output from this execution
+
+  // Metadata
+  durationMs: integer('duration_ms'),
+  tokensUsed: integer('tokens_used'),
+  status: text('status').notNull().default('success'), // 'success', 'error', 'partial'
+  errorMessage: text('error_message'),
+
+  // Timestamps
+  startedAt: timestamp('started_at').notNull(),
+  completedAt: timestamp('completed_at'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+})
+
+// ============================================================================
 // RELATIONS
 // ============================================================================
+
+export const genieSessionsRelations = relations(genieSessions, ({ one, many }) => ({
+  user: one(users, {
+    fields: [genieSessions.userId],
+    references: [users.id],
+  }),
+  grantApplication: one(grantApplications, {
+    fields: [genieSessions.grantApplicationId],
+    references: [grantApplications.id],
+  }),
+  donor: one(donors, {
+    fields: [genieSessions.donorId],
+    references: [donors.id],
+  }),
+  executions: many(genieExecutions),
+}))
+
+export const genieExecutionsRelations = relations(genieExecutions, ({ one }) => ({
+  session: one(genieSessions, {
+    fields: [genieExecutions.sessionId],
+    references: [genieSessions.id],
+  }),
+}))
 
 export const usersRelations = relations(users, ({ many, one }) => ({
   grantApplications: many(grantApplications),
   complianceItems: many(complianceItems),
   donors: many(donors),
   donorMeetingSessions: many(donorMeetingSessions),
+  genieSessions: many(genieSessions),
   knowledgeBase: many(knowledgeBase),
   activityLog: many(activityLog),
   grantSearchHistory: many(grantSearchHistory),

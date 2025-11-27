@@ -11,6 +11,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { StackProvider } from "@stackframe/stack";
 import { stackServerApp } from "@/lib/stack";
+import { ThemeProvider } from "next-themes";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,8 +24,45 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "HeadspaceGenie.ai — Headspace for humans who lead",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://headspacegenie.ai'),
+  title: {
+    default: "HeadspaceGenie.ai — Headspace for humans who lead",
+    template: "%s | HeadspaceGenie.ai",
+  },
   description: "The AI Ecosystem for Mission-Driven Leaders. Built to give leaders back their headspace. AI that remembers your mission and automates with heart.",
+  keywords: ["nonprofit", "grant writing", "AI assistant", "fundraising", "donor management", "mission-driven", "nonprofit software"],
+  authors: [{ name: "HeadspaceGenie" }],
+  creator: "HeadspaceGenie",
+  publisher: "HeadspaceGenie",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "/",
+    title: "HeadspaceGenie.ai — Headspace for humans who lead",
+    description: "The AI Ecosystem for Mission-Driven Leaders. Built to give leaders back their headspace. AI that remembers your mission and automates with heart.",
+    siteName: "HeadspaceGenie",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "HeadspaceGenie.ai — Headspace for humans who lead",
+    description: "The AI Ecosystem for Mission-Driven Leaders. Built to give leaders back their headspace. AI that remembers your mission and automates with heart.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    // Add when available:
+    // google: 'your-google-verification-code',
+    // yandex: 'your-yandex-verification-code',
+  },
 };
 
 export default function RootLayout({
@@ -34,18 +72,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
-        <StackProvider app={stackServerApp}>
-          <QueryProvider>
-            <Provider>
-              <ErrorBoundary>
-                <ToastProvider>
-                  {children}
-                </ToastProvider>
-              </ErrorBoundary>
-            </Provider>
-          </QueryProvider>
-        </StackProvider>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <StackProvider app={stackServerApp}>
+            <QueryProvider>
+              <Provider>
+                <ErrorBoundary>
+                  <ToastProvider>
+                    {children}
+                  </ToastProvider>
+                </ErrorBoundary>
+              </Provider>
+            </QueryProvider>
+          </StackProvider>
+        </ThemeProvider>
         <Analytics />
         <SpeedInsights />
       </body>

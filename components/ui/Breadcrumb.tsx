@@ -56,26 +56,25 @@ export function Breadcrumb({ items, showHome = true }: BreadcrumbProps) {
           return (
             <Flex key={index} align="center" gap={2}>
               {item.href && !isLast ? (
-                <Link
-                  asChild
-                  color="purple.600"
-                  fontWeight="medium"
-                  fontSize="sm"
-                  _hover={{ color: 'purple.700', textDecoration: 'underline' }}
-                  _focusVisible={{
-                    outline: '2px solid',
-                    outlineColor: 'purple.500',
-                    outlineOffset: '2px',
-                    borderRadius: 'sm',
-                  }}
-                >
-                  <NextLink href={item.href}>
+                <NextLink href={item.href} passHref legacyBehavior>
+                  <Link
+                    color="purple.600"
+                    fontWeight="medium"
+                    fontSize="sm"
+                    _hover={{ color: 'purple.700', textDecoration: 'underline' }}
+                    _focusVisible={{
+                      outline: '2px solid',
+                      outlineColor: 'purple.500',
+                      outlineOffset: '2px',
+                      borderRadius: 'sm',
+                    }}
+                  >
                     <Flex align="center" gap={1}>
                       {isHome && <Icon as={MdHome} />}
                       <span>{item.label}</span>
                     </Flex>
-                  </NextLink>
-                </Link>
+                  </Link>
+                </NextLink>
               ) : (
                 <Text
                   color={isLast ? 'gray.700' : 'purple.600'}

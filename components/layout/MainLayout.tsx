@@ -16,10 +16,10 @@ export default function MainLayout({ children }: MainLayoutProps) {
         <Sidebar />
         <Box
           ml={{ base: 0, md: '240px' }}
-          mt={{ base: '60px', md: 0 }}
+          mt={{ base: '56px', md: 0 }}
           w={{ base: 'full', md: 'calc(100% - 240px)' }}
-          bg="gray.50"
-          minH="100vh"
+          bg="neomorphic.background"
+          minH={{ base: 'calc(100vh - 56px)', md: '100vh' }}
         >
           {children}
         </Box>

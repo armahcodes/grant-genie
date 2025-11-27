@@ -71,7 +71,7 @@ export default function DonorMeetingPracticePage() {
 
   return (
     <MainLayout>
-      <Box minH="100vh" bg="purple.50">
+      <Box minH="100vh" bg="neomorphic.background">
         <Container maxW="container.xl" py={8}>
         <VStack gap={6} align="stretch">
           {/* Header */}
@@ -93,7 +93,7 @@ export default function DonorMeetingPracticePage() {
             {/* Left Column - Practice Info */}
             <VStack gap={6} align="stretch">
               {/* Reduction Section */}
-              <Card.Root>
+              <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
                 <Card.Header>
                   <Heading size="sm" color="purple.900">
                     Reduction
@@ -103,7 +103,7 @@ export default function DonorMeetingPracticePage() {
                   <Text fontSize="sm" color="purple.700" lineHeight="tall">
                     Research has validated good fundraising hinges on listening more than asking. Reduce "I" statements and focus on "You" during your conversation.
                   </Text>
-                  <Box mt={4} p={3} bg="purple.50" borderRadius="lg">
+                  <Box mt={4} p={3} bg="neomorphic.background" borderRadius="2xl" boxShadow="neo.inset.sm">
                     <Text fontSize="xs" color="purple.900" fontStyle="italic">
                       "e.g., Now I'm excited to spend this time hearing more about what aspects of the work resonate with you."
                     </Text>
@@ -115,7 +115,7 @@ export default function DonorMeetingPracticePage() {
               </Card.Root>
 
               {/* Knowledge Capture */}
-              <Card.Root>
+              <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
                 <Card.Header>
                   <HStack>
                     <Checkbox
@@ -142,7 +142,7 @@ export default function DonorMeetingPracticePage() {
               </Card.Root>
 
               {/* Talk to the Genie */}
-              <Card.Root bg="purple.50" border="2px solid" borderColor="purple.200">
+              <Card.Root bg="neomorphic.background" borderRadius="3xl" boxShadow="neo.inset.md" border="none">
                 <Card.Header>
                   <Heading size="sm" color="purple.900">
                     Talk to the Genie
@@ -157,10 +157,10 @@ export default function DonorMeetingPracticePage() {
                       <Box
                         key={index}
                         p={3}
-                        bg="white"
-                        borderRadius="lg"
-                        border="1px solid"
-                        borderColor="purple.200"
+                        bg="neomorphic.surface"
+                        borderRadius="2xl"
+                        boxShadow="neo.sm"
+                        border="none"
                       >
                         <Text fontSize="xs" color="purple.900">
                           {question}
@@ -172,8 +172,20 @@ export default function DonorMeetingPracticePage() {
                     size="sm"
                     colorPalette="purple"
                     variant="outline"
+                    color="purple.900"
                     w="full"
                     mt={4}
+                    bg="neomorphic.surface"
+                    border="none"
+                    borderRadius="2xl"
+                    boxShadow="neo.sm"
+                    _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                    _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+                    _focusVisible={{
+                      outline: '3px solid',
+                      outlineColor: 'purple.500',
+                      outlineOffset: '2px',
+                    }}
                   >
                     Ask the Knowledge Base
                   </Button>
@@ -185,7 +197,7 @@ export default function DonorMeetingPracticePage() {
             <Box gridColumn={{ base: '1', lg: 'span 2' }}>
               <VStack gap={6} align="stretch">
                 {/* Donor Profile */}
-                <Card.Root bg="purple.700" color="white">
+                <Card.Root bg="purple.700" color="white" borderRadius="3xl" border="none" boxShadow="neo.md">
                   <Card.Header>
                     <HStack justify="space-between">
                       <VStack align="start" gap={1}>
@@ -218,7 +230,7 @@ export default function DonorMeetingPracticePage() {
                 </Card.Root>
 
                 {/* Search Summary */}
-                <Card.Root>
+                <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
                   <Card.Header>
                     <Heading size="sm" color="purple.900">
                       Search Summary
@@ -243,7 +255,7 @@ export default function DonorMeetingPracticePage() {
                 </Card.Root>
 
                 {/* Conversation */}
-                <Card.Root>
+                <Card.Root bg="neomorphic.surface" borderRadius="3xl" boxShadow="neo.md" border="none">
                   <Card.Header>
                     <HStack justify="space-between">
                       <Heading size="sm" color="purple.900">
@@ -265,10 +277,10 @@ export default function DonorMeetingPracticePage() {
                           <Box
                             key={index}
                             p={4}
-                            bg={msg.role === 'assistant' ? 'white' : 'purple.50'}
-                            borderRadius="lg"
-                            border="1px solid"
-                            borderColor={msg.role === 'assistant' ? 'purple.200' : 'purple.200'}
+                            bg={msg.role === 'assistant' ? 'neomorphic.surface' : 'neomorphic.background'}
+                            borderRadius="2xl"
+                            boxShadow={msg.role === 'assistant' ? 'neo.sm' : 'neo.inset.sm'}
+                            border="none"
                           >
                             <HStack mb={2} justify="space-between">
                               <Badge
@@ -300,11 +312,33 @@ export default function DonorMeetingPracticePage() {
                             }
                           }}
                           disabled={isProcessing}
+                          color="purple.900"
+                          _placeholder={{ color: 'purple.400' }}
+                          bg="neomorphic.background"
+                          border="none"
+                          borderRadius="2xl"
+                          boxShadow="neo.inset.sm"
+                          _focus={{ boxShadow: 'neo.inset.md', outline: 'none' }}
+                          _focusVisible={{
+                            outline: '3px solid',
+                            outlineColor: 'purple.500',
+                            outlineOffset: '2px',
+                          }}
                         />
                         <Button
                           colorPalette="purple"
+                          color="white"
                           onClick={handleSendMessage}
                           disabled={isProcessing || !userMessage.trim()}
+                          borderRadius="2xl"
+                          boxShadow="neo.md"
+                          _hover={{ boxShadow: 'neo.lg', transform: 'translateY(-2px)' }}
+                          _active={{ transform: 'scale(0.98)', boxShadow: 'neo.sm' }}
+                          _focusVisible={{
+                            outline: '3px solid',
+                            outlineColor: 'purple.500',
+                            outlineOffset: '2px',
+                          }}
                         >
                           <Icon as={FiSend} mr={2} />
                           {isProcessing ? 'Sending...' : 'Send'}
@@ -319,6 +353,18 @@ export default function DonorMeetingPracticePage() {
                   <Button
                     colorPalette="purple"
                     variant="outline"
+                    color="purple.900"
+                    bg="neomorphic.background"
+                    border="none"
+                    borderRadius="2xl"
+                    boxShadow="neo.sm"
+                    _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                    _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+                    _focusVisible={{
+                      outline: '3px solid',
+                      outlineColor: 'purple.500',
+                      outlineOffset: '2px',
+                    }}
                   >
                     <Icon as={FiDownload} mr={2} />
                     Download Transcript
@@ -326,6 +372,18 @@ export default function DonorMeetingPracticePage() {
                   <Button
                     colorPalette="purple"
                     variant="outline"
+                    color="purple.900"
+                    bg="neomorphic.background"
+                    border="none"
+                    borderRadius="2xl"
+                    boxShadow="neo.sm"
+                    _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                    _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+                    _focusVisible={{
+                      outline: '3px solid',
+                      outlineColor: 'purple.500',
+                      outlineOffset: '2px',
+                    }}
                   >
                     <Icon as={FiBookmark} mr={2} />
                     Save to Workbook
@@ -333,6 +391,18 @@ export default function DonorMeetingPracticePage() {
                   <Button
                     colorPalette="purple"
                     variant="outline"
+                    color="purple.900"
+                    bg="neomorphic.background"
+                    border="none"
+                    borderRadius="2xl"
+                    boxShadow="neo.sm"
+                    _hover={{ boxShadow: 'neo.md', transform: 'translateY(-2px)', color: 'purple.700' }}
+                    _active={{ boxShadow: 'neo.inset.sm', transform: 'translateY(0)' }}
+                    _focusVisible={{
+                      outline: '3px solid',
+                      outlineColor: 'purple.500',
+                      outlineOffset: '2px',
+                    }}
                   >
                     <Icon as={FiShare2} mr={2} />
                     Share with Colleague

@@ -235,6 +235,46 @@ export const paginationSchema = z.object({
   limit: z.coerce.number().int().min(1).max(100).default(20),
 })
 
+// Genie Session Schemas
+export const genieSessionSchema = z.object({
+  name: z.string().min(1).max(300),
+  genieType: z.enum(['grant_writing', 'donor_meeting', 'newsletter', 'email_management']),
+  status: z.enum(['draft', 'in_progress', 'completed', 'archived']).default('draft'),
+  config: z.record(z.string(), z.unknown()).optional(),
+  inputData: z.record(z.string(), z.unknown()).optional(),
+  outputContent: z.string().optional(),
+  outputMetadata: z.record(z.string(), z.unknown()).optional(),
+  conversationHistory: z.array(z.object({
+    role: z.string(),
+    content: z.string(),
+    timestamp: z.string().optional(),
+  })).optional(),
+  grantApplicationId: z.number().int().optional(),
+  donorId: z.number().int().optional(),
+})
+
+export const createGenieSessionSchema = genieSessionSchema.pick({
+  name: true,
+  genieType: true,
+  config: true,
+  inputData: true,
+  grantApplicationId: true,
+  donorId: true,
+})
+
+export const updateGenieSessionSchema = genieSessionSchema.partial()
+
+// Genie Execution Schema (for logging executions)
+export const genieExecutionSchema = z.object({
+  sessionId: z.number().int(),
+  inputSnapshot: z.record(z.string(), z.unknown()).optional(),
+  outputSnapshot: z.string().optional(),
+  durationMs: z.number().int().optional(),
+  tokensUsed: z.number().int().optional(),
+  status: z.enum(['success', 'error', 'partial']).default('success'),
+  errorMessage: z.string().optional(),
+})
+
 // Export types
 export type GrantApplication = z.infer<typeof grantApplicationSchema>
 export type CreateGrantApplication = z.infer<typeof createGrantApplicationSchema>
@@ -265,3 +305,8 @@ export type SessionId = z.infer<typeof sessionIdSchema>
 
 export type GrantSearch = z.infer<typeof grantSearchSchema>
 export type Pagination = z.infer<typeof paginationSchema>
+
+export type GenieSession = z.infer<typeof genieSessionSchema>
+export type CreateGenieSession = z.infer<typeof createGenieSessionSchema>
+export type UpdateGenieSession = z.infer<typeof updateGenieSessionSchema>
+export type GenieExecution = z.infer<typeof genieExecutionSchema>

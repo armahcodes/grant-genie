@@ -138,7 +138,7 @@ function OnboardingContent() {
   };
 
   return (
-    <Box minH="100vh" bg="purple.50" py={{ base: 8, md: 12 }}>
+    <Box minH="100vh" bg="neomorphic.background" py={{ base: 8, md: 12 }}>
       <Container maxW="4xl">
         <VStack gap={8} align="stretch">
           {/* Header */}
@@ -169,7 +169,7 @@ function OnboardingContent() {
           </Box>
 
           {/* Onboarding Steps */}
-          <Card.Root bg="white" p={{ base: 6, md: 8 }} borderRadius="2xl" boxShadow="xl">
+          <Card.Root bg="neomorphic.surface" p={{ base: 6, md: 8 }} borderRadius="3xl" boxShadow="neo.md" border="none">
             <Card.Body>
               <form onSubmit={handleSubmit(onSubmit)}>
                 {step === 1 && (
@@ -180,8 +180,9 @@ function OnboardingContent() {
                         boxSize={8}
                         color="purple.600"
                         p={2}
-                        bg="purple.50"
-                        borderRadius="lg"
+                        bg="neomorphic.background"
+                        borderRadius="2xl"
+                        boxShadow="neo.inset.sm"
                       />
                       <VStack align="start" gap={0}>
                         <Heading size={{ base: "md", md: "lg" }} color="purple.900">
@@ -245,8 +246,9 @@ function OnboardingContent() {
                         boxSize={8}
                         color="purple.600"
                         p={2}
-                        bg="purple.50"
-                        borderRadius="lg"
+                        bg="neomorphic.background"
+                        borderRadius="2xl"
+                        boxShadow="neo.inset.sm"
                       />
                       <VStack align="start" gap={0}>
                         <Heading size={{ base: "md", md: "lg" }} color="purple.900">
@@ -296,6 +298,18 @@ function OnboardingContent() {
                               size={{ base: "sm", md: "md" }}
                               textAlign="left"
                               justifyContent="flex-start"
+                              bg={organizationType === type ? undefined : "neomorphic.background"}
+                              border="none"
+                              borderRadius="2xl"
+                              boxShadow={organizationType === type ? "neo.md" : "neo.sm"}
+                              _hover={{
+                                boxShadow: organizationType === type ? "neo.lg" : "neo.md",
+                                transform: "translateY(-2px)"
+                              }}
+                              _active={{
+                                transform: "scale(0.98)",
+                                boxShadow: organizationType === type ? "neo.sm" : "neo.inset.sm"
+                              }}
                             >
                               {organizationType === type && (
                                 <Icon as={FiCheck} mr={2} />
@@ -320,8 +334,9 @@ function OnboardingContent() {
                         boxSize={8}
                         color="purple.600"
                         p={2}
-                        bg="purple.50"
-                        borderRadius="lg"
+                        bg="neomorphic.background"
+                        borderRadius="2xl"
+                        boxShadow="neo.inset.sm"
                       />
                       <VStack align="start" gap={0}>
                         <Heading size={{ base: "md", md: "lg" }} color="purple.900">
@@ -349,6 +364,18 @@ function OnboardingContent() {
                               size={{ base: "sm", md: "md" }}
                               textAlign="left"
                               justifyContent="flex-start"
+                              bg={goals?.includes(goal) ? undefined : "neomorphic.background"}
+                              border="none"
+                              borderRadius="2xl"
+                              boxShadow={goals?.includes(goal) ? "neo.md" : "neo.sm"}
+                              _hover={{
+                                boxShadow: goals?.includes(goal) ? "neo.lg" : "neo.md",
+                                transform: "translateY(-2px)"
+                              }}
+                              _active={{
+                                transform: "scale(0.98)",
+                                boxShadow: goals?.includes(goal) ? "neo.sm" : "neo.inset.sm"
+                              }}
                             >
                               {goals?.includes(goal) && <Icon as={FiCheck} mr={2} />}
                               {goal}
@@ -369,9 +396,16 @@ function OnboardingContent() {
                     type="button"
                     variant="outline"
                     colorPalette="purple"
+                    color="purple.900"
                     onClick={handleBack}
                     disabled={step === 1}
                     size={{ base: "md", md: "lg" }}
+                    bg="neomorphic.background"
+                    border="none"
+                    borderRadius="2xl"
+                    boxShadow="neo.sm"
+                    _hover={{ boxShadow: "neo.md", transform: "translateY(-2px)", color: "purple.700" }}
+                    _active={{ boxShadow: "neo.inset.sm", transform: "translateY(0)" }}
                   >
                     Back
                   </Button>
@@ -380,8 +414,13 @@ function OnboardingContent() {
                     <Button
                       type="button"
                       colorPalette="purple"
+                      color="white"
                       onClick={handleNext}
                       size={{ base: "md", md: "lg" }}
+                      borderRadius="2xl"
+                      boxShadow="neo.md"
+                      _hover={{ boxShadow: "neo.lg", transform: "translateY(-2px)" }}
+                      _active={{ transform: "scale(0.98)", boxShadow: "neo.sm" }}
                     >
                       Continue
                       <Icon as={FiArrowRight} ml={2} />
@@ -390,9 +429,14 @@ function OnboardingContent() {
                     <Button
                       type="submit"
                       colorPalette="purple"
+                      color="white"
                       size={{ base: "md", md: "lg" }}
                       loading={isSubmitting}
                       disabled={isSubmitting}
+                      borderRadius="2xl"
+                      boxShadow="neo.md"
+                      _hover={{ boxShadow: "neo.lg", transform: "translateY(-2px)" }}
+                      _active={{ transform: "scale(0.98)", boxShadow: "neo.sm" }}
                     >
                       {isSubmitting ? "Saving..." : "Complete Setup"}
                       <Icon as={FiCheck} ml={2} />
@@ -410,7 +454,7 @@ function OnboardingContent() {
 
 function LoadingFallback() {
   return (
-    <Box minH="100vh" bg="purple.50" display="flex" alignItems="center" justifyContent="center">
+    <Box minH="100vh" bg="neomorphic.background" display="flex" alignItems="center" justifyContent="center">
       <VStack gap={4}>
         <Spinner size="xl" colorPalette="purple" borderWidth="4px" />
         <Text color="purple.700">Loading...</Text>

@@ -30,7 +30,14 @@
       "Bash(find:*)",
       "mcp__chakra-ui__v2_to_v3_code_review",
       "mcp__chakra-ui__get_component_example",
-      "Bash(for file in /Users/blacktechgenius/projects/grant-genie/app/{grant-application,grant-search,support,settings}/page.tsx)"
+      "Bash(for file in /Users/blacktechgenius/projects/grant-genie/app/{grant-application,grant-search,support,settings}/page.tsx)",
+      "Bash(npm audit:*)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(git rm:*)",
+      "WebFetch(domain:useworkflow.dev)",
+      "Bash(xargs ls:*)",
+      "WebFetch(domain:stack-auth.com)"
     ],
     "deny": [],
     "ask": []
